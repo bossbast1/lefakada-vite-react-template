@@ -54,8 +54,8 @@ export interface FoodSectionsData {
 
 export const FoodSections: React.FC<{ data: FoodSectionsData }> = ({ data }) => (
   <div>
-    <FoodSection title="Supermarkets & Grocery Stores" items={data.supermarkets} />
-    <FoodSection title="Restaurants & Taverns" items={data.restaurants} />
-    <FoodSection title="Gas Stations (Petrol / Fuel)" items={data.gasStations} />
+    if (data.restaurants.length) {<FoodSection title="Supermarkets & Grocery Stores" items={data.supermarkets} />}
+    {data.restaurants.length && <FoodSection title="Restaurants & Taverns" items={data.restaurants} />}
+    {data.gasStations.length && <FoodSection title="Gas Stations (Petrol / Fuel)" items={data.gasStations} />} 
   </div>
 );

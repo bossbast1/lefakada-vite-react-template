@@ -8,6 +8,7 @@ import BeachCards from "./components/BeachCards";
 import type { Beach } from "./components/BeachCards";
 import { FoodSections, FoodItem, FoodSectionsData } from "./components/FoodSections";
 import AccommodationCards from "./components/AccommodationCards";
+import CalendarModal from "./components/CalendarModal";
 // Food/gas data (should be moved to a data file or fetched in future)
 const foodSectionsData: FoodSectionsData = {
 	supermarkets: [
@@ -310,11 +311,13 @@ import MapModal from "./components/MapModal";
 
 const locales = { en, gr };
 const sections = [
-	 { id: "home" },
-	 { id: "travel" },
-	 { id: "trips" },
-	 { id: "food" },
-	 { id: "accommodation" },
+	{ id: "home" },           // Lefkada
+	{ id: "accommodation" }, // Accommodation
+	{ id: "travel" },        // Beaches
+	{ id: "food" },          // Food
+	{ id: "greekfoods" },    // Greek Foods (as first in food section)
+	{ id: "trips" },         // Trips
+	{ id: "transport" },     // Transportation
 ];
 
 // Accommodation data
@@ -398,6 +401,7 @@ const extraServices = [
 ];
 
 // Test gallery images (replace with real later)
+const CALENDAR_URL = "https://www.supersaas.sk/schedule/Komilio/Komilio1_booking";
 const testGallery: GalleryImage[] = [
 	{
 		src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
@@ -430,9 +434,13 @@ function App() {
 	const [directionsUrl, setDirectionsUrl] = useState("");
 	const [directionsName, setDirectionsName] = useState("");
 
+	// Calendar modal state
+	const [calendarOpen, setCalendarOpen] = useState(false);
+	const [calendarUrl, setCalendarUrl] = useState<string>("");
+
 	// Prevent background scroll when modal is open
 	useEffect(() => {
-		if (mapOpen || galleryOpen || directionsOpen) {
+		if (mapOpen || galleryOpen || directionsOpen || calendarOpen) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "";
@@ -440,7 +448,7 @@ function App() {
 		return () => {
 			document.body.style.overflow = "";
 		};
-	}, [mapOpen, galleryOpen, directionsOpen]);
+	}, [mapOpen, galleryOpen, directionsOpen, calendarOpen]);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -482,6 +490,17 @@ function App() {
 		setMapOpen(true);
 	};
 
+	// Expose handler for Reserve button (AccommodationCard)
+	useEffect(() => {
+		(window as any).onReserveClick = () => {
+			setCalendarUrl(CALENDAR_URL);
+			setCalendarOpen(true);
+		};
+		return () => {
+			(window as any).onReserveClick = undefined;
+		};
+	}, []);
+
 	return (
 		<div className="lefka-app">
 			<div className="lefka-lang-select">
@@ -517,6 +536,42 @@ function App() {
 					<h1>{t.homeTitle}</h1>
 					<p>{t.homeDesc}</p>
 				</section>
+				<section
+					id="accommodation"
+					ref={(el) => {
+						sectionRefs.current["accommodation"] = el;
+					}}
+					className="lefka-section"
+				>
+					<h2>{t.accomTitle}</h2>
+					<AccommodationCards
+						data={accommodationData}
+						onGalleryClick={(images, idx) => {
+							setGalleryImages(images);
+							setGalleryCurrent(idx);
+							setGalleryOpen(true);
+						}}
+						onMapEmbed={(embedUrl, name) => {
+							setMapUrl(embedUrl);
+							setMapName(name);
+							setMapOpen(true);
+						}}
+					/>
+					<div className="accommodation-extra-services">
+						<h3>What else we can provide</h3>
+						<ul>
+							{extraServices.map((s, i) => (
+								<li key={i}><strong>{s.title}:</strong> {s.detail}</li>
+							))}
+						</ul>
+					</div>
+					<div className="komilio-card">
+						<h3>About Komilio (Komílion)</h3>
+						<p>
+							Komilio is a traditional mountain village in southern Lefkada, known for its peaceful atmosphere, beautiful views, and proximity to the island’s best beaches. It’s a great base for exploring the region and enjoying authentic Greek village life.
+						</p>
+					</div>
+				</section>				
 				<section
 					id="travel"
 					ref={(el) => {
@@ -564,6 +619,98 @@ function App() {
 					</div>
 				</section>
 				<section
+					id="food"
+					ref={(el) => {
+						sectionRefs.current["food"] = el;
+					}}
+					className="lefka-section"
+				>
+					<h2 style={{ color: '#0077b6' }}>Food</h2>
+					<h3>Top 5 Traditional Greek Foods</h3>
+					<div className="greek-foods-list">
+						{[
+							{
+								name: "Moussaka",
+								img: "moussaka.jpg",
+								ingredients: [
+									"2 eggplants",
+									"2 potatoes",
+									"500g minced beef or lamb",
+									"1 onion",
+									"2 cloves garlic",
+									"400g canned tomatoes",
+									"Olive oil, salt, pepper, cinnamon, nutmeg",
+									"Béchamel sauce (milk, flour, butter, nutmeg, egg yolk)"
+								],
+								process: "Slice eggplants and potatoes, fry or bake until soft. Sauté onion and garlic, add minced meat, cook until browned. Add tomatoes and spices, simmer. Layer potatoes, eggplants, meat sauce in a baking dish, top with béchamel. Bake at 180°C for 45 minutes until golden."
+							},
+							{
+								name: "Souvlaki",
+								img: "souvlaki.jpg",
+								ingredients: [
+									"500g pork or chicken, cut in cubes",
+									"Olive oil, lemon juice, oregano, salt, pepper",
+									"Pita bread, tomatoes, onions, tzatziki"
+								],
+								process: "Marinate meat in olive oil, lemon, oregano, salt, pepper for 2+ hours. Skewer and grill until cooked. Serve in pita with tomatoes, onions, and tzatziki."
+							},
+							{
+								name: "Greek Salad (Horiatiki)",
+								img: "greek-salad.jpg",
+								ingredients: [
+									"Tomatoes",
+									"Cucumbers",
+									"Red onion",
+									"Kalamata olives",
+									"Feta cheese",
+									"Oregano, olive oil, salt"
+								],
+								process: "Chop vegetables, combine in a bowl. Add olives and feta on top. Sprinkle with oregano, salt, and drizzle with olive oil. Serve fresh."
+							},
+							{
+								name: "Spanakopita",
+								img: "spanakopita.jpg",
+								ingredients: [
+									"500g spinach",
+									"200g feta cheese",
+									"1 onion",
+									"2 eggs",
+									"Dill, parsley, olive oil, salt, pepper",
+									"Phyllo dough"
+								],
+								process: "Sauté onion, add spinach, cook until wilted. Mix with crumbled feta, eggs, herbs, salt, pepper. Layer phyllo in a pan, add filling, cover with more phyllo. Brush with olive oil. Bake at 180°C for 40 minutes until golden."
+							},
+							{
+								name: "Baklava",
+								img: "baklava.jpg",
+								ingredients: [
+									"400g phyllo dough",
+									"250g walnuts or pistachios",
+									"150g butter",
+									"200g sugar",
+									"200ml water",
+									"100g honey",
+									"Cinnamon, lemon juice"
+								],
+								process: "Layer phyllo and melted butter in a pan, sprinkle with chopped nuts and cinnamon. Repeat layers. Cut into diamonds. Bake at 180°C for 40 min. Boil sugar, water, honey, lemon for syrup, pour over hot baklava."
+							}
+						].map((food, i) => (
+							<div key={i} className="greek-food-card" style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '2rem', gap: '2rem' }}>
+								<img src={"/src/react-app/assets/" + food.img} alt={food.name} style={{ width: 180, height: 120, objectFit: 'cover', borderRadius: '0.7rem', background: '#eee' }} />
+								<div>
+									<h4 style={{ margin: 0 }}>{food.name}</h4>
+									<div><strong>Ingredients:</strong> <ul style={{ margin: 0, paddingLeft: 18 }}>{food.ingredients.map((ing, j) => <li key={j}>{ing}</li>)}</ul></div>
+									<div style={{ marginTop: 8 }}><strong>Process:</strong> {food.process}</div>
+								</div>
+							</div>
+						))}
+					</div>
+					<h3>Restaurants & Taverns</h3>
+					<FoodSections data={{ supermarkets: [], restaurants: foodSectionsData.restaurants, gasStations: [] }} />
+					<h3>Supermarkets & Grocery Stores</h3>
+					<FoodSections data={{ supermarkets: foodSectionsData.supermarkets, restaurants: [], gasStations: [] }} />
+				</section>
+				<section
 					id="trips"
 					ref={(el) => {
 						sectionRefs.current["trips"] = el;
@@ -572,48 +719,48 @@ function App() {
 				>
 					<h2>{t.tripsTitle}</h2>
 					<p>{t.tripsDesc}</p>
-				</section>
+				</section>				
 				<section
-					id="food"
+					id="transport"
 					ref={(el) => {
-						sectionRefs.current["food"] = el;
+						sectionRefs.current["transport"] = el;
 					}}
 					className="lefka-section"
 				>
-					<h2>{t.foodTitle}</h2>
-					<p>{t.foodDesc}</p>
-					<FoodSections data={foodSectionsData} />
+					<h2>Transport</h2>
+					<div className="transport-airports">
+						<h3>Airports</h3>
+						<div className="airport-card">
+							<strong>Preveza (Aktio) International Airport (PVK)</strong><br />
+							<a href="https://www.google.com/maps/place/Preveza+International+Airport/@38.9308786,20.7672918,1187" target="_blank" rel="noopener noreferrer">Google Maps</a> | <a href="https://www.pvk-airport.gr/en" target="_blank" rel="noopener noreferrer">Official Website</a>
+						</div>
+						<div className="airport-card">
+							<strong>Corfu International Airport (CFU)</strong><br />
+							<a href="https://www.google.com/maps/place/Corfu+International+Airport/@39.6071366,19.9124167,1176" target="_blank" rel="noopener noreferrer">Google Maps</a> | <a href="https://www.cfu-airport.gr/en" target="_blank" rel="noopener noreferrer">Official Website</a>
+						</div>
+					</div>
+					<div className="transport-rentals">
+						<h3>Car Rentals</h3>
+						<ul>
+							<li><strong>Ionian Rent a Car</strong> – <a href="#">www.ionianrentacar.com</a></li>
+							<li><strong>EasyDrive Lefkada</strong> – <a href="#">www.easydrivelefkada.com</a></li>
+							<li><strong>Sunshine Rentals</strong> – <a href="#">www.sunshinerentals.gr</a></li>
+						</ul>
+					</div>
+					<div className="transport-gas">
+						<h3>Gas Stations</h3>
+						<ul>
+							{foodSectionsData.gasStations.map((station, i) => (
+								<li key={i}>
+									<strong>{station.name}</strong> – {station.description} <span style={{ color: '#888' }}>{station.note}</span>
+									{station.mapLink && (
+										<a href={station.mapLink} target="_blank" rel="noopener noreferrer" style={{ marginLeft: 8 }}>Map</a>
+									)}
+								</li>
+							))}
+						</ul>
+					</div>
 				</section>
-							       <section
-								   id="accommodation"
-								   ref={(el) => {
-									   sectionRefs.current["accommodation"] = el;
-								   }}
-								   className="lefka-section"
-							       >
-								       <h2>{t.accomTitle}</h2>
-								       <AccommodationCards
-									 data={accommodationData}
-									 onGalleryClick={(images, idx) => {
-									   setGalleryImages(images);
-									   setGalleryCurrent(idx);
-									   setGalleryOpen(true);
-									 }}
-									 onMapEmbed={(embedUrl, name) => {
-									   setMapUrl(embedUrl);
-									   setMapName(name);
-									   setMapOpen(true);
-									 }}
-								       />
-								       <div className="accommodation-extra-services">
-									       <h3>What else we can provide</h3>
-									       <ul>
-										       {extraServices.map((s, i) => (
-											       <li key={i}><strong>{s.title}:</strong> {s.detail}</li>
-										       ))}
-									       </ul>
-								       </div>
-							       </section>
 			</main>
 			<Gallery
 				images={galleryImages}
@@ -627,6 +774,11 @@ function App() {
 				onClose={() => setMapOpen(false)}
 				mapUrl={mapUrl}
 				name={mapName}
+			/>
+			<CalendarModal
+				open={calendarOpen}
+				onClose={() => setCalendarOpen(false)}
+				calendarUrl={calendarUrl}
 			/>
 		</div>
 	);
