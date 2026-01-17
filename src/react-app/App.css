@@ -1,45 +1,248 @@
-#root {
+.beach-general {
+		font-size: 1.13rem;
+		margin-bottom: 2.2rem;
+		color: #2a2a2a;
+		background: #eaf6fb;
+		border-radius: 0.7rem;
+		padding: 1.1rem 1.3rem;
+		box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+	}
+
+	.beach-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+		gap: 2rem;
+		margin-bottom: 2.5rem;
+		width: 100%;
+		align-items: stretch;
+	}
+	.beach-card {
+		background: #fff;
+		border-radius: 1.1rem;
+		box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		transition: transform 0.18s, box-shadow 0.18s;
+	}
+	.beach-card:hover {
+		transform: translateY(-4px) scale(1.025);
+		box-shadow: 0 6px 32px rgba(0,0,0,0.13);
+	}
+	.beach-img-wrap {
+		width: 100%;
+		height: 170px;
+		background: #e0e7ef;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+	.beach-img {
+		max-width: 100%;
+		max-height: 140px;
+		object-fit: contain;
+		filter: grayscale(0.2) brightness(0.97);
+		display: block;
+	}
+	.beach-info {
+		padding: 1.1rem 1.2rem 1.2rem 1.2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.beach-info h3 {
+		margin: 0 0 0.3rem 0;
+		color: #0077b6;
+	}
+	.beach-access {
+		margin: 0.5rem 0 0.2rem 0;
+		padding-left: 1.1rem;
+		font-size: 0.98rem;
+		color: #444;
+	}
+	.beach-access li {
+		margin-bottom: 0.2rem;
+	}
+	.beach-notes {
+		margin-top: 0.3rem;
+		font-size: 0.97rem;
+		color: #e67e22;
+		font-style: italic;
+	}
+
+	.komilio-card {
+		background: #f3f8f6;
+		border-left: 5px solid #009688;
+		border-radius: 0.7rem;
+		padding: 1.1rem 1.3rem;
+		margin-bottom: 2.2rem;
+		box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+	}
+	.komilio-card h3 {
+		margin-top: 0;
+		color: #009688;
+	}
+
+	.beach-table-wrap {
+		margin-top: 1.5rem;
+	}
+	.beach-table {
+		width: 100%;
+		border-collapse: collapse;
+		background: #fff;
+		border-radius: 0.7rem;
+		overflow: hidden;
+		box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+	}
+	.beach-table th, .beach-table td {
+		padding: 0.7rem 1.1rem;
+		text-align: left;
+	}
+	.beach-table th {
+		background: #eaf6fb;
+		color: #0077b6;
+		font-weight: 600;
+	}
+	.beach-table tr:nth-child(even) td {
+		background: #f7fafc;
+	}
+	.beach-table tr:nth-child(odd) td {
+		background: #fff;
+	}
+	.beach-table td {
+		color: #333;
+	}
+
+	@media (max-width: 900px) {
+		.beach-cards {
+			flex-direction: column;
+			align-items: center;
+		}
+		.beach-card {
+			max-width: 98vw;
+		}
+	}
+	@media (max-width: 900px) {
+		.lefka-main {
+			max-width: 98vw;
+			padding: 1rem 0.2rem;
+		}
+		.beach-cards {
+			grid-template-columns: 1fr;
+			gap: 1.2rem;
+		}
+		.beach-img-wrap {
+			height: 120px;
+		}
+		.beach-img {
+			max-height: 90px;
+		}
+	}
+	.lefka-lang-select label {
+		margin-right: 0.5rem;
+		font-weight: 500;
+	}
+	.lefka-lang-select select {
+		font-size: 1rem;
+		padding: 0.2rem 0.7rem;
+		border-radius: 0.4rem;
+		border: 1px solid #bbb;
+		background: #fff;
+		color: #222;
+	}
 	max-width: 1280px;
 	margin: 0 auto;
 	padding: 2rem;
 	text-align: center;
-}
-
-.logo {
 	height: 6em;
 	padding: 1.5em;
 	will-change: filter;
 	transition: filter 300ms;
-}
-.logo:hover {
 	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
 	filter: drop-shadow(0 0 2em #61dafbaa);
-}
-.logo.cloudflare:hover {
 	filter: drop-shadow(0 0 2em #f6821faa);
-}
-
-@keyframes logo-spin {
 	from {
 		transform: rotate(0deg);
 	}
 	to {
 		transform: rotate(360deg);
 	}
-}
-
-@media (prefers-reduced-motion: no-preference) {
 	a:nth-of-type(2) .logo {
 		animation: logo-spin infinite 20s linear;
 	}
-}
-
-.card {
 	padding: 2em;
+	color: #888;
+
+.lefka-app {
+	font-family: system-ui, sans-serif;
+	background: #f7fafc;
+	color: #222;
+	min-height: 100vh;
 }
 
-.read-the-docs {
-	color: #888;
+.lefka-nav {
+	position: sticky;
+	top: 0;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+	gap: 1.5rem;
+	padding: 1rem 0;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+	z-index: 10;
+}
+.lefka-nav button {
+	background: none;
+	border: none;
+	font-size: 1.1rem;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	color: #444;
+	border-bottom: 2px solid transparent;
+	transition: color 0.2s, border-bottom 0.2s;
+}
+.lefka-nav button.active {
+	color: #0077b6;
+	border-bottom: 2px solid #0077b6;
+	font-weight: bold;
+}
+
+.lefka-main {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+}
+.lefka-section {
+	margin-bottom: 4rem;
+	padding: 2rem 1.5rem;
+	background: #fff;
+	border-radius: 1rem;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+	scroll-margin-top: 90px;
+}
+.lefka-section h1, .lefka-section h2 {
+	color: #0077b6;
+}
+.lefka-section h3 {
+	color: #009688;
+	margin-top: 1.5rem;
+}
+.lefka-section p {
+	font-size: 1.1rem;
+	line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+	.lefka-main {
+		padding: 1rem 0.2rem;
+	}
+	.lefka-section {
+		padding: 1rem 0.5rem;
+	}
+	.lefka-nav {
+		gap: 0.5rem;
+		font-size: 0.95rem;
+	}
 }
