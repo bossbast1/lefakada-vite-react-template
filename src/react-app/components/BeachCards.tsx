@@ -1,4 +1,5 @@
 import React from "react";
+import BeachCard from "./BeachCard";
 import Gallery, { GalleryImage } from "./Gallery";
 
 interface Beach {
@@ -31,59 +32,14 @@ const BeachCards: React.FC<BeachCardsProps> = ({
 }) => (
   <div className="beach-cards">
     {beaches.map((beach) => (
-      <div className="beach-card" key={beach.id}>
-        <div
-          className="beach-img-wrap"
-          onClick={() => onCardClick(beach)}
-          style={{
-            height: "200px",
-            width: "100%",
-            padding: 0,
-            margin: 0,
-            background: "none",
-          }}
-        >
-          <img
-            src={import.meta.env.BASE_URL + "src/react-app/assets/" + beach.img}
-            alt={beach.name}
-            className="beach-img"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-              display: "block",
-              background: "none",
-            }}
-          />
-        </div>
-        <div className="beach-info">
-          <h3>{beach.name}</h3>
-          <p>{beach.desc}</p>
-          <ul className="beach-access">
-            {beach.access.map((a, i) => (
-              <li key={i}>{a}</li>
-            ))}
-          </ul>
-          {beach.notes && <div className="beach-notes">{beach.notes}</div>}
-          {beach.mapUrl && (
-            <button
-              className="beach-map-btn"
-              onClick={() => onMapClick(beach)}
-            >
-              View on Map
-            </button>
-          )}
-          {beach.directionsToKomilion && (
-            <button
-              className="beach-map-btn"
-              onClick={() => onDirectionsToKomilion(beach)}
-            >
-              Navigate from Beach to Komilio1
-            </button>
-          )}
-        </div>
-      </div>
+      <BeachCard
+        key={beach.id}
+        beach={beach}
+        onCardClick={onCardClick}
+        onMapClick={onMapClick}
+        onDirectionsToKomilion={onDirectionsToKomilion}
+        onDirectionsFromMyLocation={onDirectionsFromMyLocation}
+      />
     ))}
   </div>
 );
