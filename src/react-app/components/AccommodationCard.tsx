@@ -1,0 +1,64 @@
+import React from "react";
+import type { GalleryImage } from "./Gallery";
+
+export interface AccommodationFeature {
+  icon: React.ReactNode;
+  label: string;
+  description?: string;
+}
+
+export interface AccommodationCardProps {
+  title: string;
+  images: GalleryImage[];
+  tags: AccommodationFeature[];
+  description: string;
+  points: { title: string; detail: string }[];
+  gps: { lat: number; lng: number; label: string; embedUrl: string; gmapsUrl: string; fromAirportUrl: string };
+  onGalleryClick: (images: GalleryImage[], startIdx: number) => void;
+  onMapEmbed: (embedUrl: string, name: string) => void;
+}
+
+const AccommodationCard: React.FC<AccommodationCardProps> = ({
+  title,
+  images,
+  tags,
+  description,
+  points,
+  gps,
+  onGalleryClick,
+  onMapEmbed,
+}) => (
+  <div className="accommodation-card">
+    <div className="accommodation-img-wrap" style={{ cursor: 'pointer' }} onClick={() => onGalleryClick(images, 0)}>
+      <img src={images[0].src} alt={title} className="accommodation-img" />
+    </div>
+    <div className="accommodation-info">
+      <h3>{title}</h3>
+      <div className="accommodation-tags">
+        {tags.map((tag, i) => (
+          <span className="accommodation-tag" key={i} title={tag.description}>
+            {tag.icon} {tag.label}
+          </span>
+        ))}
+      </div>
+      <div className="accommodation-description">{description}</div>
+      <ul className="accommodation-points">
+        {points.map((p, i) => (
+          <li key={i}>
+            <strong>{p.title}:</strong> {p.detail}
+          </li>
+        ))}
+      </ul>
+      <div className="accommodation-gps">
+        <div><strong>GPS:</strong> {gps.lat}, {gps.lng}</div>
+        <div style={{ margin: '0.5rem 0 0.7rem 0', display: 'flex', gap: '0.7rem', flexWrap: 'wrap' }}>
+          <button className="beach-map-btn" onClick={() => onMapEmbed(gps.embedUrl, title)}>Show place (embed)</button>
+          <a className="beach-map-btn" href={gps.gmapsUrl} target="_blank" rel="noopener noreferrer">Directions from current location</a>
+          <a className="beach-map-btn" href={gps.fromAirportUrl} target="_blank" rel="noopener noreferrer">From Preveza Aktio Airport</a>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export default AccommodationCard;

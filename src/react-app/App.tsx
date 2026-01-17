@@ -7,6 +7,7 @@ import gr from "./locales/gr";
 import BeachCards from "./components/BeachCards";
 import type { Beach } from "./components/BeachCards";
 import { FoodSections, FoodItem, FoodSectionsData } from "./components/FoodSections";
+import AccommodationCards from "./components/AccommodationCards";
 // Food/gas data (should be moved to a data file or fetched in future)
 const foodSectionsData: FoodSectionsData = {
 	supermarkets: [
@@ -309,11 +310,91 @@ import MapModal from "./components/MapModal";
 
 const locales = { en, gr };
 const sections = [
-	{ id: "home" },
-	{ id: "travel" },
-	{ id: "trips" },
-	{ id: "food" },
-	{ id: "accommodation" },
+	 { id: "home" },
+	 { id: "travel" },
+	 { id: "trips" },
+	 { id: "food" },
+	 { id: "accommodation" },
+];
+
+// Accommodation data
+const sharedFeatures = [
+	{ icon: <span role="img" aria-label="cleaning">🧹</span>, label: "Cleaning", description: "Once per 3 days or on agreement" },
+	{ icon: <span role="img" aria-label="house">🏠</span>, label: "Entire place", description: "You have the whole accommodation for yourself" },
+	{ icon: <span role="img" aria-label="wifi">📶</span>, label: "Free Wi-Fi" },
+	{ icon: <span role="img" aria-label="family">👨‍👩‍👧‍👦</span>, label: "Family rooms" },
+	{ icon: <span role="img" aria-label="bbq">🍖</span>, label: "BBQ facilities" },
+	{ icon: <span role="img" aria-label="bread">🥐</span>, label: "Bakery delivery", description: "Personal bakery delivery in the morning" },
+	{ icon: <span role="img" aria-label="balcony">🛋️</span>, label: "Balcony" },
+	{ icon: <span role="img" aria-label="terrace">🌅</span>, label: "Terrace" },
+	{ icon: <span role="img" aria-label="basketball">🏀</span>, label: "Public basketball court (20m)" },
+	{ icon: <span role="img" aria-label="no-smoking">🚭</span>, label: "Non-smoking rooms" },
+	{ icon: <span role="img" aria-label="no-pets">❌🐕</span>, label: "No pets" },
+];
+
+const accommodationData = [
+	{
+		title: "Komilio 1 - Agave Villas",
+		images: [
+			{ src: "/src/react-app/assets/komilio1.jpg", alt: "Komilio 1 - Agave Villas" },
+			{ src: "/src/react-app/assets/komilio2.jpg", alt: "Komilio 2 - Agave Villas" },
+		],
+		tags: [
+			...sharedFeatures,
+			{ icon: <span role="img" aria-label="parking">🅿️</span>, label: "Free parking (2 cars)" },
+		],
+		description: "Spacious two-floor villa with a large living area, ideal for families or groups. Enjoy a fully equipped kitchen, multiple bedrooms, and a private terrace.",
+		points: [
+			{ title: "Area", detail: "150m²" },
+			{ title: "Floors", detail: "2" },
+			{ title: "Bathrooms", detail: "2 WC" },
+			{ title: "Beds", detail: "4 double beds + 1 single bed" },
+			{ title: "Kitchen", detail: "Fully equipped" },
+			{ title: "Parking", detail: "Free on-site parking for 2 cars" },
+		],
+		gps: {
+			lat: 38.7109208,
+			lng: 20.5932805,
+			label: "KOMILIO 1",
+			embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3150.1689089407!2d20.5932805!3d38.7109208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135db3e304ca1c01:0x3dfff83a38d0f5bb!2sKOMILIO%201!5e0!3m2!1sen!2sgr!4v0",
+			gmapsUrl: "https://www.google.com/maps/dir/?api=1&destination=38.7109208,20.5932805",
+			fromAirportUrl: "https://www.google.com/maps/dir/Preveza+Aktio+Airport/38.7109208,20.5932805",
+		},
+	},
+	{
+		title: "Komilio 2 - Agave Villas",
+		images: [
+			{ src: "/src/react-app/assets/komilio2.jpg", alt: "Komilio 2 - Agave Villas" },
+			{ src: "/src/react-app/assets/komilio1.jpg", alt: "Komilio 1 - Agave Villas" },
+		],
+		tags: [
+			...sharedFeatures,
+			{ icon: <span role="img" aria-label="pool">🏊‍♂️</span>, label: "Private pool" },
+		],
+		description: "Modern two-floor villa with private pool, perfect for a relaxing holiday. Features two bedrooms, an external kitchen, and a beautiful terrace.",
+		points: [
+			{ title: "Floors", detail: "2" },
+			{ title: "Beds", detail: "2 double beds" },
+			{ title: "Kitchen", detail: "External, fully equipped" },
+			{ title: "Pool", detail: "Private pool" },
+		],
+		gps: {
+			lat: 38.710895,
+			lng: 20.590574,
+			label: "Komilio 2",
+			embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3150.1689089407!2d20.590574!3d38.710895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135db3e304ca1c01:0x3dfff83a38d0f5bb!2sKOMILIO%201!5e0!3m2!1sen!2sgr!4v0",
+			gmapsUrl: "https://www.google.com/maps/dir/?api=1&destination=38.710895,20.590574",
+			fromAirportUrl: "https://www.google.com/maps/dir/Preveza+Aktio+Airport/38.710895,20.590574",
+		},
+	},
+];
+
+const extraServices = [
+	{ title: "Airport transfer", detail: "We can arrange transport from the airport to the villa." },
+	{ title: "Car/bike rental", detail: "Assistance with renting a car or bicycle." },
+	{ title: "Motorboat rental", detail: "Help with renting a motorboat for your stay." },
+	{ title: "Sports activities", detail: "Windsurfing, cycling, canoeing and more." },
+	{ title: "Health stays", detail: "Special stays for asthma, eczema, and other conditions." },
 ];
 
 // Test gallery images (replace with real later)
@@ -503,19 +584,36 @@ function App() {
 					<p>{t.foodDesc}</p>
 					<FoodSections data={foodSectionsData} />
 				</section>
-				<section
-					id="accommodation"
-					ref={(el) => {
-						sectionRefs.current["accommodation"] = el;
-					}}
-					className="lefka-section"
-				>
-					<h2>{t.accomTitle}</h2>
-					<h3>{t.accom1}</h3>
-					<p>{t.accom1Desc}</p>
-					<h3>{t.accom2}</h3>
-					<p>{t.accom2Desc}</p>
-				</section>
+							       <section
+								   id="accommodation"
+								   ref={(el) => {
+									   sectionRefs.current["accommodation"] = el;
+								   }}
+								   className="lefka-section"
+							       >
+								       <h2>{t.accomTitle}</h2>
+								       <AccommodationCards
+									 data={accommodationData}
+									 onGalleryClick={(images, idx) => {
+									   setGalleryImages(images);
+									   setGalleryCurrent(idx);
+									   setGalleryOpen(true);
+									 }}
+									 onMapEmbed={(embedUrl, name) => {
+									   setMapUrl(embedUrl);
+									   setMapName(name);
+									   setMapOpen(true);
+									 }}
+								       />
+								       <div className="accommodation-extra-services">
+									       <h3>What else we can provide</h3>
+									       <ul>
+										       {extraServices.map((s, i) => (
+											       <li key={i}><strong>{s.title}:</strong> {s.detail}</li>
+										       ))}
+									       </ul>
+								       </div>
+							       </section>
 			</main>
 			<Gallery
 				images={galleryImages}
