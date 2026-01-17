@@ -19,10 +19,12 @@ const en = {
       desc: "World‑famous beach with steep limestone cliffs, white pebbles, and intense azure water; one of Greece’s most photographed beaches.",
       access: [
         "From Lefkada Town: ~45 min drive; large cliffside parking; steep stairs down to beach.",
-        "From Komilio (Komílion): ~1 hr 10 min drive; same parking and stair access."
+        "From Komilio (Komilio1): ~1 hr 10 min drive; same parking and stair access."
       ],
       notes: "Can be windy; get there early to avoid crowds.",
-      mapUrl: "https://www.google.com/maps?q=Porto+Katsiki+Beach+Lefkada&output=embed"
+      mapUrl: "https://www.google.com/maps?q=Porto+Katsiki+Beach+Lefkada&output=embed",
+      directionsToKomilion: "https://www.google.com/maps/dir/?api=1&origin=Porto+Katsiki+Beach+Lefkada&destination=KOMILIO+1+Komilio+31082+Greece&travelmode=driving",
+      directionsFromMyLocation: "https://www.google.com/maps/dir/?api=1&destination=Porto+Katsiki+Beach+Lefkada&travelmode=driving"
     },
     {
       id: "egremni",
@@ -34,7 +36,9 @@ const en = {
         "From Komilio: ~50–55 min drive; stair access."
       ],
       notes: "Check local conditions — access can be restricted in some seasons due to landslides.",
-      mapUrl: "https://www.google.com/maps?q=Egremni+Beach+Lefkada&output=embed"
+      mapUrl: "https://www.google.com/maps?q=Egremni+Beach+Lefkada&output=embed",
+      directionsToKomilion: "https://www.google.com/maps/dir/?api=1&origin=Egremni+Beach+Lefkada&destination=KOMILIO+1+Komilio+31082+Greece&travelmode=driving",
+      directionsFromMyLocation: "https://www.google.com/maps/dir/?api=1&destination=Egremni+Beach+Lefkada&travelmode=driving"
     },
     {
       id: "kathisma",
@@ -46,7 +50,9 @@ const en = {
         "From Komilio: ~25–30 min drive; easy parking near beach."
       ],
       notes: "",
-      mapUrl: "https://www.google.com/maps?q=Kathisma+Beach+Lefkada&output=embed"
+      mapUrl: "https://www.google.com/maps?q=Kathisma+Beach+Lefkada&output=embed",
+      directionsToKomilion: "https://www.google.com/maps/dir/?api=1&origin=Kathisma+Beach+Lefkada&destination=KOMILIO+1+Komilio+31082+Greece&travelmode=driving",
+      directionsFromMyLocation: "https://www.google.com/maps/dir/?api=1&destination=Kathisma+Beach+Lefkada&travelmode=driving"
     },
     {
       id: "milos",
@@ -58,7 +64,9 @@ const en = {
         "From Komilio: ~20–25 min drive; direct access & parking."
       ],
       notes: "",
-      mapUrl: "https://www.google.com/maps?q=Milos+Beach+Lefkada&output=embed"
+      mapUrl: "https://www.google.com/maps?q=Milos+Beach+Lefkada&output=embed",
+      directionsToKomilion: "https://www.google.com/maps/dir/?api=1&origin=Milos+Beach+Lefkada&destination=KOMILIO+1+Komilio+31082+Greece&travelmode=driving",
+      directionsFromMyLocation: "https://www.google.com/maps/dir/?api=1&destination=Milos+Beach+Lefkada&travelmode=driving"
     },
     {
       id: "vassiliki",
@@ -70,7 +78,9 @@ const en = {
         "From Komilio: ~10–15 min drive; straightforward road to village and beach."
       ],
       notes: "",
-      mapUrl: "https://www.google.com/maps?q=Vassiliki+Beach+Lefkada&output=embed"
+      mapUrl: "https://www.google.com/maps?q=Vassiliki+Beach+Lefkada&output=embed",
+      directionsToKomilion: "https://www.google.com/maps/dir/?api=1&origin=Vassiliki+Beach+Lefkada&destination=KOMILIO+1+Komilio+31082+Greece&travelmode=driving",
+      directionsFromMyLocation: "https://www.google.com/maps/dir/?api=1&destination=Vassiliki+Beach+Lefkada&travelmode=driving"
     }
   ],
   travelKomilio: {
@@ -103,6 +113,7 @@ const en = {
     "Modern apartment close to the beach, ideal for families and couples looking to enjoy the sea and sun.",
   lang: "Language",
   en: "English",
-  gr: "Greek"
+  gr: "Greek",
+  komilionAddress: "KOMILIO 1, ΚΟΜΗΛΙΟ , 31082, ΚΟΜΗΛΙΟΝ, Komilio 310 82, Grécko"
 };
 export default en;

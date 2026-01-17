@@ -45,6 +45,23 @@ function App() {
 	const [mapUrl, setMapUrl] = useState("");
 	const [mapName, setMapName] = useState("");
 
+	// Directions modal state
+	const [directionsOpen, setDirectionsOpen] = useState(false);
+	const [directionsUrl, setDirectionsUrl] = useState("");
+	const [directionsName, setDirectionsName] = useState("");
+
+	// Prevent background scroll when modal is open
+	useEffect(() => {
+		if (mapOpen || galleryOpen || directionsOpen) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [mapOpen, galleryOpen, directionsOpen]);
+
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrollPosition = window.scrollY + window.innerHeight / 3;
@@ -84,18 +101,6 @@ function App() {
 		setMapName(beach.name);
 		setMapOpen(true);
 	};
-
-	// Prevent background scroll when modal is open
-	useEffect(() => {
-		if (mapOpen || galleryOpen) {
-			document.body.style.overflow = "hidden";
-		} else {
-			document.body.style.overflow = "";
-		}
-		return () => {
-			document.body.style.overflow = "";
-		};
-	}, [mapOpen, galleryOpen]);
 
 	return (
 		<div className="lefka-app">
@@ -145,6 +150,12 @@ function App() {
 						beaches={t.travelBeaches}
 						onCardClick={handleCardClick}
 						onMapClick={handleMapClick}
+						onDirectionsToKomilion={(beach) =>
+							window.open(beach.directionsToKomilion, "_blank")
+						}
+						onDirectionsFromMyLocation={(beach) =>
+							window.open(beach.directionsFromMyLocation, "_blank")
+						}
 					/>
 					<div className="komilio-card">
 						<h3>{t.travelKomilio.title}</h3>
