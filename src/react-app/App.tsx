@@ -396,7 +396,7 @@ function App() {
 
 	// Handle map button click
 	const handleMapClick = (beach: Beach) => {
-		setMapUrl(beach.mapUrl);
+		setMapUrl(beach.mapUrl ?? "");
 		setMapName(beach.name);
 		setMapOpen(true);
 	};
