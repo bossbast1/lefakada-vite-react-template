@@ -5,6 +5,8 @@ import "./App.css";
 import en from "./locales/en";
 import gr from "./locales/gr";
 import BeachCards from "./components/BeachCards";
+import Gallery, { GalleryImage } from "./components/Gallery";
+import MapModal from "./components/MapModal";
 
 const locales = { en, gr };
 const sections = [
@@ -15,11 +17,33 @@ const sections = [
 	{ id: "accommodation" },
 ];
 
+// Test gallery images (replace with real later)
+const testGallery: GalleryImage[] = [
+	{
+		src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+		alt: "Beach 1",
+	},
+	{
+		src: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+		alt: "Beach 2",
+	},
+];
+
 function App() {
 	const [active, setActive] = useState("home");
 	const [lang, setLang] = useState<"en" | "gr">("en");
 	const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 	const t = locales[lang];
+
+	// Gallery state
+	const [galleryOpen, setGalleryOpen] = useState(false);
+	const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+	const [galleryCurrent, setGalleryCurrent] = useState(0);
+
+	// Map modal state
+	const [mapOpen, setMapOpen] = useState(false);
+	const [mapUrl, setMapUrl] = useState("");
+	const [mapName, setMapName] = useState("");
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -46,6 +70,32 @@ function App() {
 			ref.scrollIntoView({ behavior: "smooth" });
 		}
 	};
+
+	// Handle beach card click
+	const handleCardClick = (beach: any) => {
+		setGalleryImages(testGallery);
+		setGalleryCurrent(0);
+		setGalleryOpen(true);
+	};
+
+	// Handle map button click
+	const handleMapClick = (beach: any) => {
+		setMapUrl(beach.mapUrl);
+		setMapName(beach.name);
+		setMapOpen(true);
+	};
+
+	// Prevent background scroll when modal is open
+	useEffect(() => {
+		if (mapOpen || galleryOpen) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [mapOpen, galleryOpen]);
 
 	return (
 		<div className="lefka-app">
@@ -91,7 +141,11 @@ function App() {
 				>
 					<h2>{t.travelTitle}</h2>
 					<p className="beach-general">{t.travelGeneral}</p>
-					<BeachCards beaches={t.travelBeaches} />
+					<BeachCards
+						beaches={t.travelBeaches}
+						onCardClick={handleCardClick}
+						onMapClick={handleMapClick}
+					/>
 					<div className="komilio-card">
 						<h3>{t.travelKomilio.title}</h3>
 						<p>{t.travelKomilio.desc}</p>
@@ -152,6 +206,19 @@ function App() {
 					<p>{t.accom2Desc}</p>
 				</section>
 			</main>
+			<Gallery
+				images={galleryImages}
+				open={galleryOpen}
+				onClose={() => setGalleryOpen(false)}
+				current={galleryCurrent}
+				setCurrent={setGalleryCurrent}
+			/>
+			<MapModal
+				open={mapOpen}
+				onClose={() => setMapOpen(false)}
+				mapUrl={mapUrl}
+				name={mapName}
+			/>
 		</div>
 	);
 }

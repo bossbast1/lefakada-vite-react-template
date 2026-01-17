@@ -21,7 +21,8 @@ const en = {
         "From Lefkada Town: ~45 min drive; large cliffside parking; steep stairs down to beach.",
         "From Komilio (Komílion): ~1 hr 10 min drive; same parking and stair access."
       ],
-      notes: "Can be windy; get there early to avoid crowds."
+      notes: "Can be windy; get there early to avoid crowds.",
+      mapUrl: "https://www.google.com/maps?q=Porto+Katsiki+Beach+Lefkada&output=embed"
     },
     {
       id: "egremni",
@@ -32,7 +33,8 @@ const en = {
         "From Lefkada Town: ~40–45 min drive; 350+ stairs from parking down.",
         "From Komilio: ~50–55 min drive; stair access."
       ],
-      notes: "Check local conditions — access can be restricted in some seasons due to landslides."
+      notes: "Check local conditions — access can be restricted in some seasons due to landslides.",
+      mapUrl: "https://www.google.com/maps?q=Egremni+Beach+Lefkada&output=embed"
     },
     {
       id: "kathisma",
@@ -43,7 +45,8 @@ const en = {
         "From Lefkada Town: ~20 min drive; direct road & parking.",
         "From Komilio: ~25–30 min drive; easy parking near beach."
       ],
-      notes: ""
+      notes: "",
+      mapUrl: "https://www.google.com/maps?q=Kathisma+Beach+Lefkada&output=embed"
     },
     {
       id: "milos",
@@ -54,7 +57,8 @@ const en = {
         "From Lefkada Town: ~15 min drive; parking close to beach.",
         "From Komilio: ~20–25 min drive; direct access & parking."
       ],
-      notes: ""
+      notes: "",
+      mapUrl: "https://www.google.com/maps?q=Milos+Beach+Lefkada&output=embed"
     },
     {
       id: "vassiliki",
@@ -65,7 +69,8 @@ const en = {
         "From Lefkada Town: ~35–40 min drive.",
         "From Komilio: ~10–15 min drive; straightforward road to village and beach."
       ],
-      notes: ""
+      notes: "",
+      mapUrl: "https://www.google.com/maps?q=Vassiliki+Beach+Lefkada&output=embed"
     }
   ],
   travelKomilio: {
