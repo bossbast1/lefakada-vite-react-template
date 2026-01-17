@@ -2,7 +2,7 @@ import React from "react";
 import BeachCard from "./BeachCard";
 import Gallery, { GalleryImage } from "./Gallery";
 
-interface Beach {
+export interface Beach {
   id: string;
   name: string;
   img: string;
