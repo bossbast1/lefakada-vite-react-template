@@ -10,7 +10,7 @@
 
 	.beach-cards {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 		gap: 2rem;
 		margin-bottom: 2.5rem;
 		width: 100%;
@@ -20,7 +20,8 @@
 		background: #fff;
 		border-radius: 1.1rem;
 		box-shadow: 0 2px 16px rgba(0,0,0,0.09);
-		min-width: 0;
+		width: 100%;
+		margin: 0;
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
@@ -126,7 +127,6 @@
 	}
 	@media (max-width: 900px) {
 		.lefka-main {
-			max-width: 98vw;
 			padding: 1rem 0.2rem;
 		}
 		.beach-cards {
@@ -152,26 +152,6 @@
 		background: #fff;
 		color: #222;
 	}
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 2rem;
-	text-align: center;
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
-	filter: drop-shadow(0 0 2em #646cffaa);
-	filter: drop-shadow(0 0 2em #61dafbaa);
-	filter: drop-shadow(0 0 2em #f6821faa);
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-	a:nth-of-type(2) .logo {
-		animation: logo-spin infinite 20s linear;
-	}
 	padding: 2em;
 	color: #888;
 
@@ -180,6 +160,10 @@
 	background: #f7fafc;
 	color: #222;
 	min-height: 100vh;
+	width: 100vw;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 .lefka-nav {
@@ -210,9 +194,10 @@
 }
 
 .lefka-main {
-	max-width: 700px;
-	margin: 0 auto;
-	padding: 2rem 1rem;
+	width: 100vw;
+	margin: 0;
+	padding: 2rem 0;
+	box-sizing: border-box;
 }
 .lefka-section {
 	margin-bottom: 4rem;
