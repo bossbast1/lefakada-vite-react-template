@@ -6,10 +6,13 @@ import { MdOutlineBakeryDining } from "react-icons/md";
 import "./App.css";
 import en from "./locales/en";
 import gr from "./locales/gr";
-import BeachCards from "./components/BeachCards";
-import type { Beach } from "./components/BeachCards";
-import { FoodSections, FoodItem } from "./components/FoodSections";
-import AccommodationCards from "./components/AccommodationCards";
+import BeachCards, { Beach } from "./components/BeachCards";
+import { FoodSections } from "./components/FoodSections";
+import AccommodationSection from "./components/AccommodationSection";
+import BeachSection from "./components/BeachSection";
+import FoodSection from "./components/FoodSection";
+import TripsSection from "./components/TripsSection";
+import TransportSection from "./components/TransportSection";
 import CalendarModal from "./components/CalendarModal";
 // Food/gas data (should be moved to a data file or fetched in future)
 const foodSectionsData = {
@@ -420,6 +423,92 @@ function App() {
 	const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 	const t = locales[lang];
 
+	// Data for new section components
+	const greekFoods = [
+		{
+			name: "Moussaka",
+			img: "moussaka.jpg",
+			ingredients: [
+				"2 eggplants",
+				"2 potatoes",
+				"500g minced beef or lamb",
+				"1 onion",
+				"2 cloves garlic",
+				"400g canned tomatoes",
+				"Olive oil, salt, pepper, cinnamon, nutmeg",
+				"Béchamel sauce (milk, flour, butter, nutmeg, egg yolk)"
+			],
+			process: "Slice eggplants and potatoes, fry or bake until soft. Sauté onion and garlic, add minced meat, cook until browned. Add tomatoes and spices, simmer. Layer potatoes, eggplants, meat sauce in a baking dish, top with béchamel. Bake at 180°C for 45 minutes until golden."
+		},
+		{
+			name: "Souvlaki",
+			img: "souvlaki.jpg",
+			ingredients: [
+				"500g pork or chicken, cut in cubes",
+				"Olive oil, lemon juice, oregano, salt, pepper",
+				"Pita bread, tomatoes, onions, tzatziki"
+			],
+			process: "Marinate meat in olive oil, lemon, oregano, salt, pepper for 2+ hours. Skewer and grill until cooked. Serve in pita with tomatoes, onions, and tzatziki."
+		},
+		{
+			name: "Greek Salad (Horiatiki)",
+			img: "greek-salad.jpg",
+			ingredients: [
+				"Tomatoes",
+				"Cucumbers",
+				"Red onion",
+				"Kalamata olives",
+				"Feta cheese",
+				"Oregano, olive oil, salt"
+			],
+			process: "Chop vegetables, combine in a bowl. Add olives and feta on top. Sprinkle with oregano, salt, and drizzle with olive oil. Serve fresh."
+		},
+		{
+			name: "Spanakopita",
+			img: "spanakopita.jpg",
+			ingredients: [
+				"500g spinach",
+				"200g feta cheese",
+				"1 onion",
+				"2 eggs",
+				"Dill, parsley, olive oil, salt, pepper",
+				"Phyllo dough"
+			],
+			process: "Sauté onion, add spinach, cook until wilted. Mix with crumbled feta, eggs, herbs, salt, pepper. Layer phyllo in a pan, add filling, cover with more phyllo. Brush with olive oil. Bake at 180°C for 40 minutes until golden."
+		},
+		{
+			name: "Baklava",
+			img: "baklava.jpg",
+			ingredients: [
+				"400g phyllo dough",
+				"250g walnuts or pistachios",
+				"150g butter",
+				"200g sugar",
+				"200ml water",
+				"100g honey",
+				"Cinnamon, lemon juice"
+			],
+			process: "Layer phyllo and melted butter in a pan, sprinkle with chopped nuts and cinnamon. Repeat layers. Cut into diamonds. Bake at 180°C for 40 min. Boil sugar, water, honey, lemon for syrup, pour over hot baklava."
+		}
+	];
+	const airports = [
+		{
+			name: "Preveza (Aktio) International Airport (PVK)",
+			mapsUrl: "https://www.google.com/maps/place/Preveza+International+Airport/@38.9308786,20.7672918,1187",
+			website: "https://www.pvk-airport.gr/en"
+		},
+		{
+			name: "Corfu International Airport (CFU)",
+			mapsUrl: "https://www.google.com/maps/place/Corfu+International+Airport/@39.6071366,19.9124167,1176",
+			website: "https://www.cfu-airport.gr/en"
+		}
+	];
+	const carRentals = [
+		{ name: "Ionian Rent a Car", url: "https://www.ionianrentacar.com" },
+		{ name: "EasyDrive Lefkada", url: "https://www.easydrivelefkada.com" },
+		{ name: "Sunshine Rentals", url: "https://www.sunshinerentals.gr" }
+	];
+
 	// Gallery state
 	const [galleryOpen, setGalleryOpen] = useState(false);
 	const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
@@ -537,231 +626,54 @@ function App() {
 					<h1>{t.homeTitle}</h1>
 					<p>{t.homeDesc}</p>
 				</section>
-				<section
-					id="accommodation"
-					ref={(el) => {
+				<AccommodationSection
+					t={t}
+					data={accommodationData}
+					extraServices={extraServices}
+					onGalleryClick={(images, idx) => {
+						setGalleryImages(images);
+						setGalleryCurrent(idx);
+						setGalleryOpen(true);
+					}}
+					onMapEmbed={(embedUrl, name) => {
+						setMapUrl(embedUrl);
+						setMapName(name);
+						setMapOpen(true);
+					}}
+					sectionRef={(el) => {
 						sectionRefs.current["accommodation"] = el;
 					}}
-					className="lefka-section"
-				>
-					<h2>{t.accomTitle}</h2>
-					<AccommodationCards
-						data={accommodationData}
-						onGalleryClick={(images, idx) => {
-							setGalleryImages(images);
-							setGalleryCurrent(idx);
-							setGalleryOpen(true);
-						}}
-						onMapEmbed={(embedUrl, name) => {
-							setMapUrl(embedUrl);
-							setMapName(name);
-							setMapOpen(true);
-						}}
-					/>
-					<div className="accommodation-extra-services">
-						<h3>What else we can provide</h3>
-						<ul>
-							{extraServices.map((s, i) => (
-								<li key={i}><strong>{s.title}:</strong> {s.detail}</li>
-							))}
-						</ul>
-					</div>
-					<div className="komilio-card">
-						<h3>About Komilio (Komílion)</h3>
-						<p>
-							Komilio is a traditional mountain village in southern Lefkada, known for its peaceful atmosphere, beautiful views, and proximity to the island’s best beaches. It’s a great base for exploring the region and enjoying authentic Greek village life.
-						</p>
-					</div>
-				</section>				
-				<section
-					id="travel"
-					ref={(el) => {
+				/>
+				<BeachSection
+					t={t}
+					onCardClick={handleCardClick}
+					onMapClick={handleMapClick}
+					sectionRef={(el) => {
 						sectionRefs.current["travel"] = el;
 					}}
-					className="lefka-section"
-				>
-					<h2>{t.travelTitle}</h2>
-					<p className="beach-general">{t.travelGeneral}</p>
-					<BeachCards
-						beaches={t.travelBeaches}
-						onCardClick={handleCardClick}
-						onMapClick={handleMapClick}
-						onDirectionsToKomilion={(beach: Beach) =>
-							window.open(beach.directionsToKomilion, "_blank")
-						}
-						onDirectionsFromMyLocation={(beach: Beach) =>
-							window.open(beach.directionsFromMyLocation, "_blank")
-						}
-					/>
-					<div className="komilio-card">
-						<h3>{t.travelKomilio.title}</h3>
-						<p>{t.travelKomilio.desc}</p>
-					</div>
-					<div className="beach-table-wrap">
-						<h4>{t.travelTableTitle}</h4>
-						<table className="beach-table">
-							<thead>
-								<tr>
-									{t.travelTable.headers.map((h, i) => (
-										<th key={i}>{h}</th>
-									))}
-								</tr>
-							</thead>
-							<tbody>
-								{t.travelTable.rows.map((row, i) => (
-									<tr key={i}>
-										{row.map((cell, j) => (
-											<td key={j}>{cell}</td>
-										))}
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				</section>
-				<section
-					id="food"
-					ref={(el) => {
+				/>
+				<FoodSection
+					greekFoods={greekFoods}
+					restaurants={foodSectionsData.restaurants}
+					supermarkets={foodSectionsData.supermarkets}
+					sectionRef={(el) => {
 						sectionRefs.current["food"] = el;
 					}}
-					className="lefka-section"
-				>
-					<h2 style={{ color: '#0077b6' }}>Food</h2>
-					<h3>Top 5 Traditional Greek Foods</h3>
-					<div className="greek-foods-list">
-						{[
-							{
-								name: "Moussaka",
-								img: "moussaka.jpg",
-								ingredients: [
-									"2 eggplants",
-									"2 potatoes",
-									"500g minced beef or lamb",
-									"1 onion",
-									"2 cloves garlic",
-									"400g canned tomatoes",
-									"Olive oil, salt, pepper, cinnamon, nutmeg",
-									"Béchamel sauce (milk, flour, butter, nutmeg, egg yolk)"
-								],
-								process: "Slice eggplants and potatoes, fry or bake until soft. Sauté onion and garlic, add minced meat, cook until browned. Add tomatoes and spices, simmer. Layer potatoes, eggplants, meat sauce in a baking dish, top with béchamel. Bake at 180°C for 45 minutes until golden."
-							},
-							{
-								name: "Souvlaki",
-								img: "souvlaki.jpg",
-								ingredients: [
-									"500g pork or chicken, cut in cubes",
-									"Olive oil, lemon juice, oregano, salt, pepper",
-									"Pita bread, tomatoes, onions, tzatziki"
-								],
-								process: "Marinate meat in olive oil, lemon, oregano, salt, pepper for 2+ hours. Skewer and grill until cooked. Serve in pita with tomatoes, onions, and tzatziki."
-							},
-							{
-								name: "Greek Salad (Horiatiki)",
-								img: "greek-salad.jpg",
-								ingredients: [
-									"Tomatoes",
-									"Cucumbers",
-									"Red onion",
-									"Kalamata olives",
-									"Feta cheese",
-									"Oregano, olive oil, salt"
-								],
-								process: "Chop vegetables, combine in a bowl. Add olives and feta on top. Sprinkle with oregano, salt, and drizzle with olive oil. Serve fresh."
-							},
-							{
-								name: "Spanakopita",
-								img: "spanakopita.jpg",
-								ingredients: [
-									"500g spinach",
-									"200g feta cheese",
-									"1 onion",
-									"2 eggs",
-									"Dill, parsley, olive oil, salt, pepper",
-									"Phyllo dough"
-								],
-								process: "Sauté onion, add spinach, cook until wilted. Mix with crumbled feta, eggs, herbs, salt, pepper. Layer phyllo in a pan, add filling, cover with more phyllo. Brush with olive oil. Bake at 180°C for 40 minutes until golden."
-							},
-							{
-								name: "Baklava",
-								img: "baklava.jpg",
-								ingredients: [
-									"400g phyllo dough",
-									"250g walnuts or pistachios",
-									"150g butter",
-									"200g sugar",
-									"200ml water",
-									"100g honey",
-									"Cinnamon, lemon juice"
-								],
-								process: "Layer phyllo and melted butter in a pan, sprinkle with chopped nuts and cinnamon. Repeat layers. Cut into diamonds. Bake at 180°C for 40 min. Boil sugar, water, honey, lemon for syrup, pour over hot baklava."
-							}
-						].map((food, i) => (
-							<div key={i} className="greek-food-card" style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '2rem', gap: '2rem' }}>
-								<img src={"/src/react-app/assets/" + food.img} alt={food.name} style={{ width: 180, height: 120, objectFit: 'cover', borderRadius: '0.7rem', background: '#eee' }} />
-								<div>
-									<h4 style={{ margin: 0 }}>{food.name}</h4>
-									<div><strong>Ingredients:</strong> <ul style={{ margin: 0, paddingLeft: 18 }}>{food.ingredients.map((ing, j) => <li key={j}>{ing}</li>)}</ul></div>
-									<div style={{ marginTop: 8 }}><strong>Process:</strong> {food.process}</div>
-								</div>
-							</div>
-						))}
-					</div>
-					<h3>Restaurants & Taverns</h3>
-					  <FoodSections items={foodSectionsData.restaurants} />
-					<h3>Supermarkets & Grocery Stores</h3>
-					  <FoodSections items={foodSectionsData.supermarkets} />
-				</section>
-				<section
-					id="trips"
-					ref={(el) => {
+				/>
+				<TripsSection
+					t={t}
+					sectionRef={(el) => {
 						sectionRefs.current["trips"] = el;
 					}}
-					className="lefka-section"
-				>
-					<h2>{t.tripsTitle}</h2>
-					<p>{t.tripsDesc}</p>
-				</section>				
-				<section
-					id="transport"
-					ref={(el) => {
+				/>
+				<TransportSection
+					airports={airports}
+					carRentals={carRentals}
+					gasStations={foodSectionsData.gasStations}
+					sectionRef={(el) => {
 						sectionRefs.current["transport"] = el;
 					}}
-					className="lefka-section"
-				>
-					<h2>Transport</h2>
-					<div className="transport-airports">
-						<h3>Airports</h3>
-						<div className="airport-card">
-							<strong>Preveza (Aktio) International Airport (PVK)</strong><br />
-							<a href="https://www.google.com/maps/place/Preveza+International+Airport/@38.9308786,20.7672918,1187" target="_blank" rel="noopener noreferrer">Google Maps</a> | <a href="https://www.pvk-airport.gr/en" target="_blank" rel="noopener noreferrer">Official Website</a>
-						</div>
-						<div className="airport-card">
-							<strong>Corfu International Airport (CFU)</strong><br />
-							<a href="https://www.google.com/maps/place/Corfu+International+Airport/@39.6071366,19.9124167,1176" target="_blank" rel="noopener noreferrer">Google Maps</a> | <a href="https://www.cfu-airport.gr/en" target="_blank" rel="noopener noreferrer">Official Website</a>
-						</div>
-					</div>
-					<div className="transport-rentals">
-						<h3>Car Rentals</h3>
-						<ul>
-							<li><strong>Ionian Rent a Car</strong> – <a href="#">www.ionianrentacar.com</a></li>
-							<li><strong>EasyDrive Lefkada</strong> – <a href="#">www.easydrivelefkada.com</a></li>
-							<li><strong>Sunshine Rentals</strong> – <a href="#">www.sunshinerentals.gr</a></li>
-						</ul>
-					</div>
-					<div className="transport-gas">
-						<h3>Gas Stations</h3>
-						<ul>
-							{foodSectionsData.gasStations.map((station, i) => (
-								<li key={i}>
-									<strong>{station.name}</strong> – {station.description} <span style={{ color: '#888' }}>{station.note}</span>
-									{station.mapLink && (
-										<a href={station.mapLink} target="_blank" rel="noopener noreferrer" style={{ marginLeft: 8 }}>Map</a>
-									)}
-								</li>
-							))}
-						</ul>
-					</div>
-				</section>
+				/>
 			</main>
 			<Gallery
 				images={galleryImages}
