@@ -15,7 +15,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ open, onClose, calendarUr
         <iframe
           src={calendarUrl}
           title="Reservation Calendar"
-          style={{ border: 0, width: '100%', height: '100%', minHeight: 500, borderRadius: 8 }}
+          style={{ border: 0, width: '100%', height: '100%', minHeight: 300, borderRadius: 8 }}
           allowFullScreen
         />
       </div>

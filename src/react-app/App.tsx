@@ -14,6 +14,7 @@ import FoodSection from "./components/FoodSection";
 import TripsSection from "./components/TripsSection";
 import TransportSection from "./components/TransportSection";
 import CalendarModal from "./components/CalendarModal";
+import HamburgerMenu from "./components/HamburgerMenu";
 // Food/gas data (should be moved to a data file or fetched in future)
 const foodSectionsData = {
 	supermarkets: [
@@ -423,6 +424,16 @@ function App() {
 	const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 	const t = locales[lang];
 
+	// Responsive nav state
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
+	useEffect(() => {
+		const checkMobile = () => setIsMobile(window.innerWidth <= 700);
+		checkMobile();
+		window.addEventListener("resize", checkMobile);
+		return () => window.removeEventListener("resize", checkMobile);
+	}, []);
+
 	// Data for new section components
 	const greekFoods = [
 		{
@@ -604,18 +615,55 @@ function App() {
 					<option value="gr">{t.gr}</option>
 				</select>
 			</div>
-			<nav className="lefka-nav">
-				{sections.map((sec, i) => (
-					<button
-						key={sec.id}
-						className={active === sec.id ? "active" : ""}
-						onClick={() => scrollToSection(sec.id)}
-					>
-						{t.nav[i]}
-					</button>
-				))}
-			</nav>
-			<main className="lefka-main">
+			{/* Responsive nav: hamburger for mobile, full nav for desktop */}
+			{isMobile ? (
+				   <nav className="lefka-nav mobile-nav">
+					   <button
+						   className="hamburger-btn"
+						   aria-label="Open menu"
+						   onClick={() => setMenuOpen(true)}
+					   >
+						   <span className="hamburger-icon">
+							   <span></span><span></span><span></span>
+						   </span>
+					   </button>
+					   <span className="mobile-nav-current">
+						   {t.nav[sections.findIndex(s => s.id === active)]}
+					   </span>
+					   <HamburgerMenu
+						   open={menuOpen}
+						   sections={sections.map((s, i) => ({ id: s.id, label: t.nav[i] }))}
+						   current={active}
+						   onSelect={id => {
+							   scrollToSection(id);
+							   setMenuOpen(false);
+						   }}
+						   onClose={() => setMenuOpen(false)}
+					   />
+				   </nav>
+			   ) : (
+				   <nav className="lefka-nav">
+					   {sections.map((sec, i) => (
+						   <button
+							   key={sec.id}
+							   className={active === sec.id ? "active" : ""}
+							   onClick={() => scrollToSection(sec.id)}
+						   >
+							   {t.nav[i]}
+						   </button>
+					   ))}
+				   </nav>
+			   )}
+			   <main className="lefka-main">
+				   {galleryOpen && (
+					   <Gallery
+						   images={galleryImages}
+						   open={galleryOpen}
+						   onClose={() => setGalleryOpen(false)}
+						   current={galleryCurrent}
+						   setCurrent={setGalleryCurrent}
+					   />
+				   )}
 				<section
 					id="home"
 					ref={(el) => {

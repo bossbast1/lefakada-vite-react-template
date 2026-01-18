@@ -39,6 +39,7 @@ const BeachCard: React.FC<BeachCardProps> = ({
         padding: 0,
         margin: 0,
         background: "none",
+        position: "relative"
       }}
     >
       <img
@@ -54,6 +55,9 @@ const BeachCard: React.FC<BeachCardProps> = ({
           background: "none",
         }}
       />
+      <span className="beach-finger-icon">
+        <img src={import.meta.env.BASE_URL + "src/react-app/assets/finger.svg"} alt="Tap to view" style={{width: 32, height: 32, opacity: 0.7, display: 'none'}} className="beach-finger-img" />
+      </span>
     </div>
     <div className="beach-info">
       <h3>{beach.name}</h3>
