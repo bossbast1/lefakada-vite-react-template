@@ -1,54 +1,56 @@
 // src/App.tsx
 
 import React, { useRef, useEffect, useState } from "react";
+import { FaBroom, FaHome, FaWifi, FaUsers, FaUtensils, FaBreadSlice, FaCouch, FaSun, FaBasketballBall, FaSmokingBan, FaDog, FaParking, FaSwimmingPool, FaShoppingCart, FaGasPump } from "react-icons/fa";
+import { MdOutlineBakeryDining } from "react-icons/md";
 import "./App.css";
 import en from "./locales/en";
 import gr from "./locales/gr";
 import BeachCards from "./components/BeachCards";
 import type { Beach } from "./components/BeachCards";
-import { FoodSections, FoodItem, FoodSectionsData } from "./components/FoodSections";
+import { FoodSections, FoodItem } from "./components/FoodSections";
 import AccommodationCards from "./components/AccommodationCards";
 import CalendarModal from "./components/CalendarModal";
 // Food/gas data (should be moved to a data file or fetched in future)
-const foodSectionsData: FoodSectionsData = {
+const foodSectionsData = {
 	supermarkets: [
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Agora - coffee and shop",
 			description: "Small supermarket/coffee spot right on the Komilio road, good for basics and snacks.",
 			note: "Closest to Komilio",
 			mapLink: "https://maps.google.com/?q=Agora+Komilio+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Euro Market",
 			description: "Well‑reviewed local supermarket in Vassiliki.",
 			note: "Vassiliki area (~10 min)",
 			mapLink: "https://maps.google.com/?q=Euro+Market+Vassiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Supermarket Asteria",
 			description: "Mid‑size supermarket in Ligia area near Vassiliki.",
 			note: "Ligia area (~10 min)",
 			mapLink: "https://maps.google.com/?q=Supermarket+Asteria+Ligia+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Emporokinisi Super Market",
 			description: "Good local market in Marantochori, convenient if passing by.",
 			note: "Marantochori (~10 min)",
 			mapLink: "https://maps.google.com/?q=Emporokinisi+Super+Market+Marantochori+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Supermarket Nikos",
 			description: "Another well‑rated option toward Vassiliki.",
 			note: "Vassiliki area (~10–15 min)",
 			mapLink: "https://maps.google.com/?q=Supermarket+Nikos+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Sklavenitis",
 			description: "Major Greek supermarket chain in Lefkada town.",
 			note: "Lefkada town (~25–30 min)",
@@ -56,7 +58,7 @@ const foodSectionsData: FoodSectionsData = {
 			websiteLink: "https://www.sklavenitis.gr/",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Lidl",
 			description: "Lidl budget supermarket near Nidri road.",
 			note: "Lefkada town (~25–30 min)",
@@ -64,143 +66,143 @@ const foodSectionsData: FoodSectionsData = {
 			websiteLink: "https://www.lidl-hellas.gr/",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Carrefour Market",
 			description: "Hypermarket in Lefkada town.",
 			note: "Lefkada town (~25–30 min)",
 			mapLink: "https://maps.google.com/?q=Carrefour+Market+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "My market",
 			description: "Town supermarket with solid selection.",
 			note: "Lefkada town (~25–30 min)",
 			mapLink: "https://maps.google.com/?q=My+market+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "SUPER MARKET BENIZELOS",
 			description: "Town supermarket with solid selection.",
 			note: "Lefkada town (~25–30 min)",
 			mapLink: "https://maps.google.com/?q=SUPER+MARKET+BENIZELOS+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Super Market Soldatos",
 			description: "Local store in Lefkada town.",
 			note: "Lefkada town (~25–30 min)",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Market In",
 			description: "Local store in Lefkada town.",
 			note: "Lefkada town (~25–30 min)",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Kritikos Super market",
 			description: "Local store in Lefkada town.",
 			note: "Lefkada town (~25–30 min)",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Super Market Argo",
 			description: "In Agios Nikitas, good for day trips.",
 			note: "Agios Nikitas (~25–30 min)",
 			mapLink: "https://maps.google.com/?q=Super+Market+Argo+Agios+Nikitas+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Supermarket Join in",
 			description: "In Agios Nikitas, good for day trips.",
 			note: "Agios Nikitas (~25–30 min)",
 			mapLink: "https://maps.google.com/?q=Supermarket+Join+in+Agios+Nikitas+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="supermarket">🛒</span>,
+			icon: <FaShoppingCart />,
 			name: "Mini‑markets and small grocery stores",
 			description: "Common in villages and small towns.",
 			note: "Various locations",
 		},
 	],
-	restaurants: [
+	 restaurants: [
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Sesoula Taverna (Dragano)",
 			description: "Classic Greek taverna with strong local reputation.",
 			note: "Dragano (~10–25 min)",
 			mapLink: "https://maps.google.com/?q=Sesoula+Taverna+Dragano+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Lygkos",
 			description: "Well‑reviewed casual restaurant with local dishes.",
 			note: "On way toward west coast (~10–25 min)",
 			mapLink: "https://maps.google.com/?q=Lygkos+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Greco Levante",
 			description: "Rural restaurant en route to coast.",
 			note: "En route to coast (~10–25 min)",
 			mapLink: "https://maps.google.com/?q=Greco+Levante+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Balkonaki (Ag. Petros)",
 			description: "Awarded restaurant in traditional village setting.",
 			note: "Agios Petros (~10–25 min)",
 			mapLink: "https://maps.google.com/?q=Balkonaki+Agios+Petros+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Τα πηγάδια Taverna / Ta pigadia",
 			description: "Highly rated modern Greek tavern.",
 			note: "Vassiliki area (~10–15 min)",
 			mapLink: "https://maps.google.com/?q=Ta+pigadia+Vasiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Χασαποταβέρνα 'Ο Θανάσης'",
 			description: "Local favorite grill restaurant.",
 			note: "Vassiliki area (~10–15 min)",
 			mapLink: "https://maps.google.com/?q=Χασαποταβέρνα+Ο+Θανάσης+Vasiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Pondi Family Restaurant",
 			description: "Large seafood & Greek cuisine choice.",
 			note: "Vassiliki area (~10–15 min)",
 			mapLink: "https://maps.google.com/?q=Pondi+Vassiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Άριστον Γεύσεις",
 			description: "Additional good choice in Vassiliki.",
 			note: "Vassiliki area (~10–15 min)",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "RESTAURANT CAFE /POOL BAR",
 			description: "Additional good choice in Vassiliki.",
 			note: "Vassiliki area (~10–15 min)",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Mastelo Restaurant & Bar",
 			description: "Top‑rated town restaurant.",
 			note: "Lefkada town (~25–35 min)",
 			mapLink: "https://maps.google.com/?q=Mastelo+Restaurant+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Magiko Fagito - Εστιατόριο Λευκάδα",
 			description: "Well‑rated local restaurant.",
 			note: "Lefkada town (~25–35 min)",
 			mapLink: "https://maps.google.com/?q=Magiko+Fagito+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+		 icon: <FaUtensils />,
 			name: "Joel - Gastro Grill",
 			description: "Town favorite.",
 			note: "Lefkada town (~25–35 min)",
@@ -226,65 +228,65 @@ const foodSectionsData: FoodSectionsData = {
 			note: "Mikros Gialos",
 		},
 	],
-	gasStations: [
+	 gasStations: [
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "Sklavenitis",
 			description: "Gas station in Vassiliki area.",
 			note: "Vassiliki area (~10–20 min)",
 			mapLink: "https://maps.google.com/?q=Sklavenitis+Gas+Station+Vassiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "AEGEAN",
 			description: "Petrol in Vassiliki outskirts.",
 			note: "Vassiliki outskirts (~10–20 min)",
 			mapLink: "https://maps.google.com/?q=AEGEAN+Gas+Station+Vassiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "Aegean Georgaki",
 			description: "Another Vassiliki option.",
 			note: "Vassiliki (~10–20 min)",
 			mapLink: "https://maps.google.com/?q=Aegean+Georgaki+Vassiliki+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "bp",
 			description: "BP station near Megali Vrisi.",
 			note: "Megali Vrisi (~10–20 min)",
 			mapLink: "https://maps.google.com/?q=BP+Gas+Station+Megali+Vrisi+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "ελίν - ΚΑΒΒΑΔΑ ΧΡΙΣΤΙΝΑ",
 			description: "Highly rated fuel station near Apolpena.",
 			note: "Apolpena (~20–30 min)",
 			mapLink: "https://maps.google.com/?q=ελίν+ΚΑΒΒΑΔΑ+ΧΡΙΣΤΙΝΑ+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "EKO",
 			description: "Central Lefkada option.",
 			note: "Central Lefkada (~20–30 min)",
 			mapLink: "https://maps.google.com/?q=EKO+Gas+Station+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "Θεμελης Σ. Γεωργιος",
 			description: "Central Lefkada option.",
 			note: "Central Lefkada (~20–30 min)",
 			mapLink: "https://maps.google.com/?q=Θεμελης+Σ+Γεωργιος+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "Shell (Kalligoni)",
 			description: "Shell station on main route near Kalligoni.",
 			note: "Kalligoni (~20–30 min)",
 			mapLink: "https://maps.google.com/?q=Shell+Kalligoni+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+		 icon: <FaGasPump />,
 			name: "Shell (Apolpena)",
 			description: "Shell station on main route near Apolpena.",
 			note: "Apolpena (~20–30 min)",
@@ -322,17 +324,17 @@ const sections = [
 
 // Accommodation data
 const sharedFeatures = [
-	{ icon: <span role="img" aria-label="cleaning">🧹</span>, label: "Cleaning", description: "Once per 3 days or on agreement" },
-	{ icon: <span role="img" aria-label="house">🏠</span>, label: "Entire place", description: "You have the whole accommodation for yourself" },
-	{ icon: <span role="img" aria-label="wifi">📶</span>, label: "Free Wi-Fi" },
-	{ icon: <span role="img" aria-label="family">👨‍👩‍👧‍👦</span>, label: "Family rooms" },
-	{ icon: <span role="img" aria-label="bbq">🍖</span>, label: "BBQ facilities" },
-	{ icon: <span role="img" aria-label="bread">🥐</span>, label: "Bakery delivery", description: "Personal bakery delivery in the morning" },
-	{ icon: <span role="img" aria-label="balcony">🛋️</span>, label: "Balcony" },
-	{ icon: <span role="img" aria-label="terrace">🌅</span>, label: "Terrace" },
-	{ icon: <span role="img" aria-label="basketball">🏀</span>, label: "Public basketball court (20m)" },
-	{ icon: <span role="img" aria-label="no-smoking">🚭</span>, label: "Non-smoking rooms" },
-	{ icon: <span role="img" aria-label="no-pets">❌🐕</span>, label: "No pets" },
+	{ icon: <FaBroom />, label: "Cleaning", description: "Once per 3 days or on agreement" },
+	{ icon: <FaHome />, label: "Entire place", description: "You have the whole accommodation for yourself" },
+	{ icon: <FaWifi />, label: "Free Wi-Fi" },
+	{ icon: <FaUsers />, label: "Family rooms" },
+	{ icon: <FaUtensils />, label: "BBQ facilities" },
+	{ icon: <MdOutlineBakeryDining />, label: "Bakery delivery", description: "Personal bakery delivery in the morning" },
+	{ icon: <FaCouch />, label: "Balcony" },
+	{ icon: <FaSun />, label: "Terrace" },
+	{ icon: <FaBasketballBall />, label: "Public basketball court (20m)" },
+	{ icon: <FaSmokingBan />, label: "Non-smoking rooms" },
+	{ icon: <FaDog style={{ textDecoration: 'line-through' }} />, label: "No pets" },
 ];
 
 const accommodationData = [
@@ -344,7 +346,7 @@ const accommodationData = [
 		],
 		tags: [
 			...sharedFeatures,
-			{ icon: <span role="img" aria-label="parking">🅿️</span>, label: "Free parking (2 cars)" },
+			{ icon: <FaParking />, label: "Free parking (2 cars)" },
 		],
 		description: "Spacious two-floor villa with a large living area, ideal for families or groups. Enjoy a fully equipped kitchen, multiple bedrooms, and a private terrace.",
 		points: [
@@ -372,7 +374,7 @@ const accommodationData = [
 		],
 		tags: [
 			...sharedFeatures,
-			{ icon: <span role="img" aria-label="pool">🏊‍♂️</span>, label: "Private pool" },
+			{ icon: <FaSwimmingPool />, label: "Private pool" },
 		],
 		description: "Modern two-floor villa with private pool, perfect for a relaxing holiday. Features two bedrooms, an external kitchen, and a beautiful terrace.",
 		points: [
@@ -706,9 +708,9 @@ function App() {
 						))}
 					</div>
 					<h3>Restaurants & Taverns</h3>
-					<FoodSections data={{ supermarkets: [], restaurants: foodSectionsData.restaurants, gasStations: [] }} />
+					  <FoodSections items={foodSectionsData.restaurants} />
 					<h3>Supermarkets & Grocery Stores</h3>
-					<FoodSections data={{ supermarkets: foodSectionsData.supermarkets, restaurants: [], gasStations: [] }} />
+					  <FoodSections items={foodSectionsData.supermarkets} />
 				</section>
 				<section
 					id="trips"

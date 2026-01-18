@@ -1,10 +1,12 @@
 const en = {
   nav: [
     "Home/About Lefka",
-    "Traveling/Beaches",
-    "Trips",
-    "Food",
     "Accommodation",
+    "Traveling/Beaches",
+    "Food",
+    "Greek Foods",
+    "Trips",
+    "Transport",
   ],
   homeTitle: "Lefkada",
   homeDesc:

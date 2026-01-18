@@ -64,16 +64,26 @@ const BeachCard: React.FC<BeachCardProps> = ({
         ))}
       </ul>
       {beach.notes && <div className="beach-notes">{beach.notes}</div>}
-      {beach.mapUrl && (
-        <button className="beach-map-btn" onClick={() => onMapClick(beach)}>
-          View on Map
-        </button>
-      )}
-      {beach.directionsToKomilion && (
-        <button className="beach-map-btn" onClick={() => onDirectionsToKomilion(beach)}>
-          Navigate from Beach to Komilio1
-        </button>
-      )}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.7rem', marginTop: 8 }}>
+        {beach.mapUrl && (
+          <button className="beach-map-btn" onClick={() => onMapClick(beach)}>
+            View on Map
+          </button>
+        )}
+        {beach.directionsToKomilion && (
+          <button className="beach-map-btn" onClick={() => onDirectionsToKomilion(beach)}>
+            Directions to Komilio
+          </button>
+        )}
+        <a
+          href={`https://www.google.com/search?q=${encodeURIComponent(beach.name + ' beach lefkada')}&udm=50`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="beach-map-btn"
+        >
+          Ask Google AI
+        </a>
+      </div>
     </div>
   </div>
 );

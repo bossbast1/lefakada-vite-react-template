@@ -52,9 +52,17 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
       <div className="accommodation-gps">
         <div><strong>GPS:</strong> {gps.lat}, {gps.lng}</div>
         <div style={{ margin: '0.5rem 0 0.7rem 0', display: 'flex', gap: '0.7rem', flexWrap: 'wrap' }}>
-          <button className="beach-map-btn" onClick={() => onMapEmbed(gps.embedUrl, title)}>Show place (embed)</button>
+          <button className="beach-map-btn" onClick={() => onMapEmbed(gps.embedUrl, title)}>Show on Map</button>
           <a className="beach-map-btn" href={gps.gmapsUrl} target="_blank" rel="noopener noreferrer">Directions from current location</a>
           <a className="beach-map-btn" href={gps.fromAirportUrl} target="_blank" rel="noopener noreferrer">From Preveza Aktio Airport</a>
+          <a
+            className="beach-map-btn"
+            href={`https://www.google.com/search?q=${encodeURIComponent(title + ' accommodation lefkada')}&udm=50`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask Google AI
+          </a>
         </div>
         <div style={{ marginTop: '1rem', textAlign: 'center' }}>
           <button

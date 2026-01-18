@@ -10,11 +10,6 @@ export interface FoodItem {
   additionalIcon?: React.ReactNode;
 }
 
-interface FoodSectionProps {
-  title: string;
-  items: FoodItem[];
-}
-
 const FoodCard: React.FC<{ item: FoodItem }> = ({ item }) => (
   <div className="food-card">
     <div className="food-card-header">
@@ -35,9 +30,8 @@ const FoodCard: React.FC<{ item: FoodItem }> = ({ item }) => (
   </div>
 );
 
-export const FoodSection: React.FC<FoodSectionProps> = ({ title, items }) => (
+export const FoodSection: React.FC<{ items: FoodItem[] }> = ({ items }) => (
   <div className="food-section">
-    <h3>{title}</h3>
     <div className="food-cards">
       {items.map((item, idx) => (
         <FoodCard item={item} key={idx} />
@@ -46,16 +40,8 @@ export const FoodSection: React.FC<FoodSectionProps> = ({ title, items }) => (
   </div>
 );
 
-export interface FoodSectionsData {
-  supermarkets: FoodItem[];
-  restaurants: FoodItem[];
-  gasStations: FoodItem[];
-}
+// No longer needed: FoodSectionsData
 
-export const FoodSections: React.FC<{ data: FoodSectionsData }> = ({ data }) => (
-  <div>
-    if (data.restaurants.length) {<FoodSection title="Supermarkets & Grocery Stores" items={data.supermarkets} />}
-    {data.restaurants.length && <FoodSection title="Restaurants & Taverns" items={data.restaurants} />}
-    {data.gasStations.length && <FoodSection title="Gas Stations (Petrol / Fuel)" items={data.gasStations} />} 
-  </div>
+export const FoodSections: React.FC<{ items: FoodItem[] }> = ({ items }) => (
+  <FoodSection items={items} />
 );
