@@ -1,3 +1,21 @@
+/* Unified gray button for map/directions/AI */
+.gray-action-btn {
+	background: #ededed;
+	color: #444;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	cursor: pointer;
+	transition: background 0.2s, border-color 0.2s;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.gray-action-btn:hover {
+	background: #e0e0e0;
+	border-color: #888;
+}
 /* Accommodation cards layout */
 .accommodation-cards {
 	width: 100vw;

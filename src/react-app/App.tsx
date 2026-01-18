@@ -202,27 +202,27 @@ const foodSectionsData = {
 			mapLink: "https://maps.google.com/?q=Magiko+Fagito+Lefkada",
 		},
 		{
-		 icon: <FaUtensils />,
+		 	icon: <FaUtensils />,
 			name: "Joel - Gastro Grill",
 			description: "Town favorite.",
 			note: "Lefkada town (~25–35 min)",
 			mapLink: "https://maps.google.com/?q=Joel+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+			icon: <FaUtensils />,
 			name: "Margarita",
 			description: "Town favorite.",
 			note: "Lefkada town (~25–35 min)",
 			mapLink: "https://maps.google.com/?q=Margarita+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+			icon: <FaUtensils />,
 			name: "Kato Rahoula Nouvell Restaurant",
 			description: "Quality in Nidri (~30 min).",
 			note: "Nidri (~30 min)",
 		},
 		{
-			icon: <span role="img" aria-label="restaurant">🍽️</span>,
+			icon: <FaUtensils />,
 			name: "Mikroyalo",
 			description: "Scenic option in Mikros Gialos.",
 			note: "Mikros Gialos",
@@ -293,14 +293,14 @@ const foodSectionsData = {
 			mapLink: "https://maps.google.com/?q=Shell+Apolpena+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+			icon: <FaGasPump />,
 			name: "ΕΚΟ KOZAKOS",
 			description: "Option in Lygia/Nidri road corridor.",
 			note: "Lygia/Nidri (~20–30 min)",
 			mapLink: "https://maps.google.com/?q=EKO+KOZAKOS+Lygia+Lefkada",
 		},
 		{
-			icon: <span role="img" aria-label="gas">⛽</span>,
+			icon: <FaGasPump />,
 			name: "Shell (Lygia)",
 			description: "Option in Lygia/Nidri road corridor.",
 			note: "Lygia/Nidri (~20–30 min)",
@@ -317,7 +317,6 @@ const sections = [
 	{ id: "accommodation" }, // Accommodation
 	{ id: "travel" },        // Beaches
 	{ id: "food" },          // Food
-	{ id: "greekfoods" },    // Greek Foods (as first in food section)
 	{ id: "trips" },         // Trips
 	{ id: "transport" },     // Transportation
 ];

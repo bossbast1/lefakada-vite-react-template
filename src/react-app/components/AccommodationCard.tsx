@@ -52,11 +52,11 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
       <div className="accommodation-gps">
         <div><strong>GPS:</strong> {gps.lat}, {gps.lng}</div>
         <div style={{ margin: '0.5rem 0 0.7rem 0', display: 'flex', gap: '0.7rem', flexWrap: 'wrap' }}>
-          <button className="beach-map-btn" onClick={() => onMapEmbed(gps.embedUrl, title)}>Show on Map</button>
-          <a className="beach-map-btn" href={gps.gmapsUrl} target="_blank" rel="noopener noreferrer">Directions from current location</a>
-          <a className="beach-map-btn" href={gps.fromAirportUrl} target="_blank" rel="noopener noreferrer">From Preveza Aktio Airport</a>
+          <button className="gray-action-btn" onClick={() => onMapEmbed(gps.embedUrl, title)}>Show on Map</button>
+          <a className="gray-action-btn" href={gps.gmapsUrl} target="_blank" rel="noopener noreferrer">Directions from current location</a>
+          <a className="gray-action-btn" href={gps.fromAirportUrl} target="_blank" rel="noopener noreferrer">From Preveza Aktio Airport</a>
           <a
-            className="beach-map-btn"
+            className="gray-action-btn"
             href={`https://www.google.com/search?q=${encodeURIComponent(title + ' accommodation lefkada')}&udm=50`}
             target="_blank"
             rel="noopener noreferrer"
@@ -65,13 +65,15 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
           </a>
         </div>
         <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <button
-            className="reserve-btn"
-            style={{ background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)', color: '#fff', border: 'none', borderRadius: 6, padding: '0.7rem 2.2rem', fontWeight: 600, fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(67,233,123,0.15)' }}
-            onClick={() => typeof (window as any).onReserveClick === 'function' && (window as any).onReserveClick()}
-          >
-            Reserve
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <button
+              className="reserve-btn"
+              style={{ background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)', color: '#fff', border: 'none', borderRadius: 6, padding: '0.7rem 2.2rem', fontWeight: 600, fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(67,233,123,0.15)' }}
+              onClick={() => typeof (window as any).onReserveClick === 'function' && (window as any).onReserveClick()}
+            >
+              Reserve
+            </button>
+          </div>
         </div>
       </div>
     </div>

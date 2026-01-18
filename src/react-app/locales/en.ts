@@ -4,7 +4,6 @@ const en = {
     "Accommodation",
     "Traveling/Beaches",
     "Food",
-    "Greek Foods",
     "Trips",
     "Transport",
   ],
