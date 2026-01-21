@@ -10,7 +10,7 @@ interface GalleryProps {
   open: boolean;
   onClose: () => void;
   current: number;
-  setCurrent: (idx: number) => void;
+  setCurrent: React.Dispatch<React.SetStateAction<number>>;
   autoScroll?: boolean;
 }
 
@@ -41,7 +41,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, open, onClose, current, setCu
   useEffect(() => {
     if (!open && autoScroll) {
       autoScrollRef.current = setInterval(() => {
-        setCurrent((current + 1) % images.length);
+        setCurrent(prev => (prev + 1) % images.length);
       }, 5000);
       return () => {
         if (autoScrollRef.current) clearInterval(autoScrollRef.current);
@@ -50,7 +50,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, open, onClose, current, setCu
       clearInterval(autoScrollRef.current);
     }
     return undefined;
-  }, [open, autoScroll, images.length, setCurrent, current]);
+  }, [open, autoScroll, images.length]);
 
   // Dot indicator
   const Dots = () => (

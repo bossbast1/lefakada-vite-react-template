@@ -1,6 +1,6 @@
 // src/App.tsx
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import { FaBroom, FaHome, FaWifi, FaUsers, FaUtensils, FaBreadSlice, FaCouch, FaSun, FaBasketballBall, FaSmokingBan, FaDog, FaParking, FaSwimmingPool, FaShoppingCart, FaGasPump } from "react-icons/fa";
 import { MdOutlineBakeryDining } from "react-icons/md";
 import "./App.css";
@@ -423,6 +423,7 @@ function App() {
 	const [lang, setLang] = useState<"en" | "gr">("en");
 	const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 	const t = locales[lang];
+	const lastVisibleIdsRef = useRef<string[]>([]);
 
 	// Responsive nav state
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -552,23 +553,45 @@ function App() {
 	}, [mapOpen, galleryOpen, directionsOpen, calendarOpen]);
 
 	useEffect(() => {
-		const handleScroll = () => {
-			const scrollPosition = window.scrollY + window.innerHeight / 3;
-			let current = "home";
-			for (const sec of sections) {
-				const ref = sectionRefs.current[sec.id];
-				if (ref) {
-					const { offsetTop } = ref;
-					if (scrollPosition >= offsetTop) {
-						current = sec.id;
-					}
-				}
-			}
-			setActive(current);
-		};
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
+  const visibleSections = new Set<string>();
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.id;
+        if (entry.isIntersecting) visibleSections.add(id);
+        else visibleSections.delete(id);
+      });
+
+      if (visibleSections.size === 0) return;
+
+      // Pick the section whose top is closest to viewport top
+      let bestId: string | null = null;
+      let bestTop = Infinity;
+
+      visibleSections.forEach((id) => {
+        const el = sectionRefs.current[id];
+        if (!el) return;
+
+        const top = Math.abs(el.getBoundingClientRect().top);
+        if (top < bestTop) {
+          bestTop = top;
+          bestId = id;
+        }
+      });
+
+      if (bestId && bestId !== active) setActive(bestId);
+    },
+    { threshold: 0 } // fire as soon as any part enters
+  );
+
+  sections.forEach((sec) => {
+    const el = sectionRefs.current[sec.id];
+    if (el) observer.observe(el);
+  });
+
+  return () => observer.disconnect();
+}, [sections, active]);
 
 	const scrollToSection = (id: string) => {
 		const ref = sectionRefs.current[id];
