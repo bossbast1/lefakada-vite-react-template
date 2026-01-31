@@ -1,3 +1,154 @@
+.calendar-overlay-fullscreen {
+	position: fixed;
+	top: 0; left: 0; right: 0; bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	background: #111;
+	z-index: 9999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	animation: fadeIn 0.2s;
+	overflow: hidden;
+}
+
+.calendar-img-wrap {
+	width: 100vw !important;
+	height: 100vh !important;
+	max-width: 100vw !important;
+	max-height: 100vh !important;
+	border-radius: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: none !important;
+}
+
+.calendar-overlay-fullscreen .calendar-img-wrap .calendar-iframe {
+	width: 100% !important; 
+	height: 100% !important;
+	min-height: 0;
+	border-radius: 0;
+	background: #111;
+	display: block;
+	flex: 1 1 0;
+	max-width: 100vw;
+	max-height: 100vh;
+}
+
+/* Add black border on all sides for large screens */
+.calendar-overlay-fullscreen .calendar-img-wrap {
+	background: #111;
+	box-sizing: border-box;
+	padding: 3vw 6vw;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.calendar-overlay-fullscreen .calendar-img-wrap .calendar-iframe {
+	box-shadow: 0 0 0 9999px #111;
+}
+
+.calendar-side-overlay {
+	/* No absolute/relative positioning, overlays are part of flex layout */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+}
+.calendar-side-right {
+	height: 100vh;
+	width: 48px;
+	flex-direction: column;
+	background: rgba(0,0,0,0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.calendar-side-top {
+	width: 100%;
+	height: auto;
+	flex-direction: row;
+	background: rgba(0,0,0,0.7);
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	box-sizing: border-box;
+	padding: 0;
+	position: static;
+	flex: 0 0 auto;
+	max-width: 100vw;
+	overflow: hidden;
+	z-index: 5;
+}
+.calendar-booking-text.portrait {
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.1rem;
+	flex: 1 1 0;
+	padding: 0;
+}
+.calendar-close.portrait {
+	align-self: center;
+	margin: 0;
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	border: none;
+	background: none;
+	color: #fff;
+	cursor: pointer;
+	pointer-events: auto;
+}
+.calendar-close {
+	font-size: 1.5rem;
+	color: #fff;
+	background: none;
+	border: none;
+	cursor: pointer;
+	margin: 0.5rem;
+	pointer-events: auto;
+}
+.calendar-close.portrait {
+	align-self: flex-end;
+	margin-right: 0.5rem;
+}
+.calendar-booking-text.portrait {
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	margin: 1rem 0;
+}
+.calendar-booking-text {
+	color: #fff;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	font-size: 1.1rem;
+	margin: 1rem 0;
+	letter-spacing: 0.1em;
+	pointer-events: auto;
+	height: 100%;
+	text-align: center;
+	padding-top: 50px;
+}
+.calendar-side-top .calendar-booking-text {
+	writing-mode: initial;
+	transform: none;
+	margin: 0 1rem;
+	padding-left: 50px;
+}
 /* Gallery dot indicator */
 .gallery-dots {
 	display: flex;
@@ -332,6 +483,9 @@ html, body, #root {
 		color: #0077b6;
 		font-weight: bold;
 		letter-spacing: 0.01em;
+		@media (min-width: 375px) {
+			padding-right: 50px;
+		}
 	}
 	.hamburger-menu-overlay {
 		position: fixed;
@@ -368,7 +522,7 @@ html, body, #root {
 		background: #eaf6fb;
 		font-weight: bold;
 	}
-	@media (min-width: 701px) {
+	@media (min-width: 831px) {
 		.mobile-nav, .hamburger-menu-overlay {
 			display: none !important;
 		}
@@ -519,7 +673,7 @@ body {
 		width: 100%;
 		min-height: 100vh;
 		/*background: #f7f7f7; */
-		background-image: url('https://unsplash.com/photos/c83n9VPYk8A/download?force=true&w=640');
+		background-image: url('https://lh3.googleusercontent.com/rd-d/ALs6j_GX7W5beGboo_HXbLPErd-dm_hAN5My62eVhD4SxivufXspCw-tOYx0UkuuaMR6RpNuH8I4gGCAYsNAdkMvQdwAqvce9b7b83U0x9ZL7V_Jw8N3DkqYyoTCjdVlPjQvg_r8xSyIHWuGWrWLyOsnVMs6qPItstVuBnUhcelLjK1FAMaNMKOrQdJ-DK3hhBsZBw77d8FVyML_0uNnpSKz5Lwy73iQorCIw3nm2Qa8fR5h0nMQLuvkxz9hOEpvpiUtdqHpiAuNkAm016PzZRRaJcZbqKVL1sJmkHhmJ58dg1RPxDDoygt4HGlh-NvNKJl3uBmQK3nVQHvQmGdUzDATl0H9ygm6m-PeOSSUC-IsUnyVmjBEryYfzZVUgjtXKHCltsmvEAfZPxCq9sbwz0udkPKSovXPPY2-qScg3JO27DramLtQtmPP-YzQtM0vVxDFX7ocDujIucx8afaiKGyHFEWQSrKXcXtc2KbHSqiSAYrsGcuCpKZtrGS2e1YmLjW4bNDQO7mhQ7IukajABwGmKQLAwQaXxYO-jK8SIJ65D4DAEZnjtxxr1k-LtsnONmA0eYZ-edUz6CjZiXlSDkNqiAvc28KFTv0aUQyx1XTvms530wosviD_aNjfUEUVQTZT_DvAkw9lDPi51bY2vC77-jTAWa0LquHqKtLF4wDi7O7viJCyT9q75v9erHzAKVlpOFtR3xcDUuZHu2wyQWyOZeD3SIs522u_wtHROTO07GIXlS6DhH07q0G35wRXXRLex5jWZJEqLS2ZAZe6lEOYUeDedptitZ1FHk0Gn0lsLMRu6sk_wnABwTVhkoEKjJ0VXBKXRtYnH0g1VMuDLNfEMI7B0SagyAPaE9RzxBtK2gK2GcUoC_o70Nv3wyPQhpx6tVa_EonFvbMNFw7dshGyqYxJ8-_4zcDqKKlP7yEfoZNlv4Mtad4Ldd4KgbIcdlXLkYnbZ55CyZJKHcI4Rzlx5U6dkO1-UXMY8_Tsc2qCSnuoxHvnD_9FCT_f9q7lHrKG7ERrrXD9ZHmRL5BoZ1SvhHTaEATs8K4nRYQTVIIQJZyxUwKh8d1d_aNpSXbF2Wbo-IzMMaMr9R_gl-cd=w1409-h1279?auditContext=forDisplay');
     	overflow-x: hidden;
 		display: flex;
 		flex-direction: column;
@@ -564,7 +718,7 @@ body {
 .lefka-section {
 	margin-bottom: 4rem;
 	padding: 2rem 1.5rem;
-	background: #ffffffdb;
+	background: #ffffffb8;
 	border-radius: 1rem;
 	box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 	scroll-margin-top: 90px;
@@ -594,13 +748,16 @@ body {
 .gallery-close {
 	position: absolute;
 	top: 2rem;
-	right: 2rem;
+	right: 1.5rem; /* Match .gallery-right */
 	font-size: 2.5rem;
 	color: #fff;
 	background: none;
 	border: none;
 	cursor: pointer;
 	z-index: 10001;
+	padding: 0 1.5rem; /* Match .gallery-nav */
+	opacity: 0.8;
+	transition: opacity 0.2s;
 }
 .gallery-img-wrap {
 	flex: 1;

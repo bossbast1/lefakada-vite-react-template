@@ -43,7 +43,7 @@ function App() {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	useEffect(() => {
-		const checkMobile = () => setIsMobile(window.innerWidth <= 700);
+		const checkMobile = () => setIsMobile(window.innerWidth <= 830);
 		checkMobile();
 		window.addEventListener("resize", checkMobile);
 		return () => window.removeEventListener("resize", checkMobile);
