@@ -711,7 +711,7 @@ body {
 .lefka-main {
 	width: 100%;
 	margin: 0;
-	padding: 2rem 0;
+	padding: 2rem 16px;
 	box-sizing: border-box;
 	max-width: 100%;
 }
