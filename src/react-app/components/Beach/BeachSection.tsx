@@ -15,7 +15,6 @@ const BeachSection: React.FC<BeachSectionProps> = ({ t, onCardClick, onMapClick,
     className="lefka-section"
   >
     <h2>{t.travelTitle}</h2>
-    <p className="beach-general">{t.travelGeneral}</p>
     <BeachCards
       beaches={t.travelBeaches}
       onCardClick={onCardClick}
