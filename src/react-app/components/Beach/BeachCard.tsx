@@ -1,5 +1,5 @@
 import React from "react";
-import Gallery, { GalleryImage } from "./Gallery";
+import Gallery, { GalleryImage } from "../Extra/Gallery";
 
 interface Beach {
   id: string;

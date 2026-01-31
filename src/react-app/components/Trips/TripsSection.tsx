@@ -1,3 +1,4 @@
+import KomilioCard from "./KomilioCard";
 import React from "react";
 
 interface TripsSectionProps {

@@ -1,6 +1,6 @@
 import React from "react";
 import BeachCard from "./BeachCard";
-import Gallery, { GalleryImage } from "./Gallery";
+import Gallery, { GalleryImage } from "../Extra/Gallery";
 
 export interface Beach {
   id: string;

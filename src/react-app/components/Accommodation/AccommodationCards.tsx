@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { GalleryImage } from "./Gallery";
+import type { GalleryImage } from "../Extra/Gallery";
 import AccommodationCard, { AccommodationFeature } from "./AccommodationCard";
 
 export interface AccommodationData {

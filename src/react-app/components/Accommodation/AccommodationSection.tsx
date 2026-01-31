@@ -1,7 +1,7 @@
 import React from "react";
 import AccommodationCards from "./AccommodationCards";
-import ExtraServices from "./ExtraServices";
-import KomilioCard from "./KomilioCard";
+import ExtraServices from "../Extra/ExtraServices";
+import KomilioCard from "../Trips/KomilioCard";
 
 interface AccommodationSectionProps {
   t: any;

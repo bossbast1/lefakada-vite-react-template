@@ -6,15 +6,17 @@ import { MdOutlineBakeryDining } from "react-icons/md";
 import "./App.css";
 import en from "./locales/en";
 import gr from "./locales/gr";
-import BeachCards, { Beach } from "./components/BeachCards";
-import { FoodSections } from "./components/FoodSections";
-import AccommodationSection from "./components/AccommodationSection";
-import BeachSection from "./components/BeachSection";
-import FoodSection from "./components/FoodSection";
-import TripsSection from "./components/TripsSection";
-import TransportSection from "./components/TransportSection";
-import CalendarModal from "./components/CalendarModal";
-import HamburgerMenu from "./components/HamburgerMenu";
+import AccommodationSection from "./components/Accommodation/AccommodationSection";
+import BeachSection from "./components/Beach/BeachSection";
+import type { Beach } from "./components/Beach/BeachCards";
+import FoodSection from "./components/Food/FoodSection";
+import TripsSection from "./components/Trips/TripsSection";
+import TransportSection from "./components/Transport/TransportSection";
+import CalendarModal from "./components/Extra/CalendarModal";
+import HamburgerMenu from "./components/Extra/HamburgerMenu";
+import Gallery, { GalleryImage } from "./components/Extra/Gallery";
+import MapModal from "./components/Extra/MapModal";
+import { FoodSections } from "./components/Food/FoodSections";
 // Food/gas data (should be moved to a data file or fetched in future)
 const foodSectionsData = {
 	supermarkets: [
@@ -312,8 +314,6 @@ const foodSectionsData = {
 		},
 	],
 };
-import Gallery, { GalleryImage } from "./components/Gallery";
-import MapModal from "./components/MapModal";
 
 const locales = { en, gr };
 const sections = [

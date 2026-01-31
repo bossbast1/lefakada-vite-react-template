@@ -1,5 +1,5 @@
 import React from "react";
-import type { GalleryImage } from "./Gallery";
+import type { GalleryImage } from "../Extra/Gallery";
 
 export interface AccommodationFeature {
   icon: React.ReactNode;
