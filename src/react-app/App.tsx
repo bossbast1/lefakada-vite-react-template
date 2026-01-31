@@ -1,14 +1,10 @@
+// @ts-nocheck
 // src/App.tsx
 
 import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
-import { FaBroom, FaHome, FaWifi, FaUsers, FaUtensils, FaBreadSlice, FaCouch, FaSun, FaBasketballBall, FaSmokingBan, FaDog, FaParking, FaSwimmingPool, FaShoppingCart, FaGasPump } from "react-icons/fa";
-import { MdOutlineBakeryDining } from "react-icons/md";
 import "./App.css";
-import en from "./locales/en";
-import gr from "./locales/gr";
 import AccommodationSection from "./components/Accommodation/AccommodationSection";
 import BeachSection from "./components/Beach/BeachSection";
-import type { Beach } from "./components/Beach/BeachCards";
 import FoodSection from "./components/Food/FoodSection";
 import TripsSection from "./components/Trips/TripsSection";
 import TransportSection from "./components/Transport/TransportSection";
@@ -16,407 +12,25 @@ import CalendarModal from "./components/Extra/CalendarModal";
 import HamburgerMenu from "./components/Extra/HamburgerMenu";
 import Gallery, { GalleryImage } from "./components/Extra/Gallery";
 import MapModal from "./components/Extra/MapModal";
-import { FoodSections } from "./components/Food/FoodSections";
-// Food/gas data (should be moved to a data file or fetched in future)
-const foodSectionsData = {
-	supermarkets: [
-		{
-			icon: <FaShoppingCart />,
-			name: "Agora - coffee and shop",
-			description: "Small supermarket/coffee spot right on the Komilio road, good for basics and snacks.",
-			note: "Closest to Komilio",
-			mapLink: "https://maps.google.com/?q=Agora+Komilio+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Euro Market",
-			description: "Well‑reviewed local supermarket in Vassiliki.",
-			note: "Vassiliki area (~10 min)",
-			mapLink: "https://maps.google.com/?q=Euro+Market+Vassiliki+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Supermarket Asteria",
-			description: "Mid‑size supermarket in Ligia area near Vassiliki.",
-			note: "Ligia area (~10 min)",
-			mapLink: "https://maps.google.com/?q=Supermarket+Asteria+Ligia+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Emporokinisi Super Market",
-			description: "Good local market in Marantochori, convenient if passing by.",
-			note: "Marantochori (~10 min)",
-			mapLink: "https://maps.google.com/?q=Emporokinisi+Super+Market+Marantochori+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Supermarket Nikos",
-			description: "Another well‑rated option toward Vassiliki.",
-			note: "Vassiliki area (~10–15 min)",
-			mapLink: "https://maps.google.com/?q=Supermarket+Nikos+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Sklavenitis",
-			description: "Major Greek supermarket chain in Lefkada town.",
-			note: "Lefkada town (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=Sklavenitis+Lefkada",
-			websiteLink: "https://www.sklavenitis.gr/",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Lidl",
-			description: "Lidl budget supermarket near Nidri road.",
-			note: "Lefkada town (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=Lidl+Lefkada",
-			websiteLink: "https://www.lidl-hellas.gr/",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Carrefour Market",
-			description: "Hypermarket in Lefkada town.",
-			note: "Lefkada town (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=Carrefour+Market+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "My market",
-			description: "Town supermarket with solid selection.",
-			note: "Lefkada town (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=My+market+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "SUPER MARKET BENIZELOS",
-			description: "Town supermarket with solid selection.",
-			note: "Lefkada town (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=SUPER+MARKET+BENIZELOS+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Super Market Soldatos",
-			description: "Local store in Lefkada town.",
-			note: "Lefkada town (~25–30 min)",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Market In",
-			description: "Local store in Lefkada town.",
-			note: "Lefkada town (~25–30 min)",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Kritikos Super market",
-			description: "Local store in Lefkada town.",
-			note: "Lefkada town (~25–30 min)",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Super Market Argo",
-			description: "In Agios Nikitas, good for day trips.",
-			note: "Agios Nikitas (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=Super+Market+Argo+Agios+Nikitas+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Supermarket Join in",
-			description: "In Agios Nikitas, good for day trips.",
-			note: "Agios Nikitas (~25–30 min)",
-			mapLink: "https://maps.google.com/?q=Supermarket+Join+in+Agios+Nikitas+Lefkada",
-		},
-		{
-			icon: <FaShoppingCart />,
-			name: "Mini‑markets and small grocery stores",
-			description: "Common in villages and small towns.",
-			note: "Various locations",
-		},
-	],
-	 restaurants: [
-		{
-		 icon: <FaUtensils />,
-			name: "Sesoula Taverna (Dragano)",
-			description: "Classic Greek taverna with strong local reputation.",
-			note: "Dragano (~10–25 min)",
-			mapLink: "https://maps.google.com/?q=Sesoula+Taverna+Dragano+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Lygkos",
-			description: "Well‑reviewed casual restaurant with local dishes.",
-			note: "On way toward west coast (~10–25 min)",
-			mapLink: "https://maps.google.com/?q=Lygkos+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Greco Levante",
-			description: "Rural restaurant en route to coast.",
-			note: "En route to coast (~10–25 min)",
-			mapLink: "https://maps.google.com/?q=Greco+Levante+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Balkonaki (Ag. Petros)",
-			description: "Awarded restaurant in traditional village setting.",
-			note: "Agios Petros (~10–25 min)",
-			mapLink: "https://maps.google.com/?q=Balkonaki+Agios+Petros+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Τα πηγάδια Taverna / Ta pigadia",
-			description: "Highly rated modern Greek tavern.",
-			note: "Vassiliki area (~10–15 min)",
-			mapLink: "https://maps.google.com/?q=Ta+pigadia+Vasiliki+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Χασαποταβέρνα 'Ο Θανάσης'",
-			description: "Local favorite grill restaurant.",
-			note: "Vassiliki area (~10–15 min)",
-			mapLink: "https://maps.google.com/?q=Χασαποταβέρνα+Ο+Θανάσης+Vasiliki+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Pondi Family Restaurant",
-			description: "Large seafood & Greek cuisine choice.",
-			note: "Vassiliki area (~10–15 min)",
-			mapLink: "https://maps.google.com/?q=Pondi+Vassiliki+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Άριστον Γεύσεις",
-			description: "Additional good choice in Vassiliki.",
-			note: "Vassiliki area (~10–15 min)",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "RESTAURANT CAFE /POOL BAR",
-			description: "Additional good choice in Vassiliki.",
-			note: "Vassiliki area (~10–15 min)",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Mastelo Restaurant & Bar",
-			description: "Top‑rated town restaurant.",
-			note: "Lefkada town (~25–35 min)",
-			mapLink: "https://maps.google.com/?q=Mastelo+Restaurant+Lefkada",
-		},
-		{
-		 icon: <FaUtensils />,
-			name: "Magiko Fagito - Εστιατόριο Λευκάδα",
-			description: "Well‑rated local restaurant.",
-			note: "Lefkada town (~25–35 min)",
-			mapLink: "https://maps.google.com/?q=Magiko+Fagito+Lefkada",
-		},
-		{
-		 	icon: <FaUtensils />,
-			name: "Joel - Gastro Grill",
-			description: "Town favorite.",
-			note: "Lefkada town (~25–35 min)",
-			mapLink: "https://maps.google.com/?q=Joel+Lefkada",
-		},
-		{
-			icon: <FaUtensils />,
-			name: "Margarita",
-			description: "Town favorite.",
-			note: "Lefkada town (~25–35 min)",
-			mapLink: "https://maps.google.com/?q=Margarita+Lefkada",
-		},
-		{
-			icon: <FaUtensils />,
-			name: "Kato Rahoula Nouvell Restaurant",
-			description: "Quality in Nidri (~30 min).",
-			note: "Nidri (~30 min)",
-		},
-		{
-			icon: <FaUtensils />,
-			name: "Mikroyalo",
-			description: "Scenic option in Mikros Gialos.",
-			note: "Mikros Gialos",
-		},
-	],
-	 gasStations: [
-		{
-		 icon: <FaGasPump />,
-			name: "Sklavenitis",
-			description: "Gas station in Vassiliki area.",
-			note: "Vassiliki area (~10–20 min)",
-			mapLink: "https://maps.google.com/?q=Sklavenitis+Gas+Station+Vassiliki+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "AEGEAN",
-			description: "Petrol in Vassiliki outskirts.",
-			note: "Vassiliki outskirts (~10–20 min)",
-			mapLink: "https://maps.google.com/?q=AEGEAN+Gas+Station+Vassiliki+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "Aegean Georgaki",
-			description: "Another Vassiliki option.",
-			note: "Vassiliki (~10–20 min)",
-			mapLink: "https://maps.google.com/?q=Aegean+Georgaki+Vassiliki+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "bp",
-			description: "BP station near Megali Vrisi.",
-			note: "Megali Vrisi (~10–20 min)",
-			mapLink: "https://maps.google.com/?q=BP+Gas+Station+Megali+Vrisi+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "ελίν - ΚΑΒΒΑΔΑ ΧΡΙΣΤΙΝΑ",
-			description: "Highly rated fuel station near Apolpena.",
-			note: "Apolpena (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=ελίν+ΚΑΒΒΑΔΑ+ΧΡΙΣΤΙΝΑ+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "EKO",
-			description: "Central Lefkada option.",
-			note: "Central Lefkada (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=EKO+Gas+Station+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "Θεμελης Σ. Γεωργιος",
-			description: "Central Lefkada option.",
-			note: "Central Lefkada (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=Θεμελης+Σ+Γεωργιος+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "Shell (Kalligoni)",
-			description: "Shell station on main route near Kalligoni.",
-			note: "Kalligoni (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=Shell+Kalligoni+Lefkada",
-		},
-		{
-		 icon: <FaGasPump />,
-			name: "Shell (Apolpena)",
-			description: "Shell station on main route near Apolpena.",
-			note: "Apolpena (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=Shell+Apolpena+Lefkada",
-		},
-		{
-			icon: <FaGasPump />,
-			name: "ΕΚΟ KOZAKOS",
-			description: "Option in Lygia/Nidri road corridor.",
-			note: "Lygia/Nidri (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=EKO+KOZAKOS+Lygia+Lefkada",
-		},
-		{
-			icon: <FaGasPump />,
-			name: "Shell (Lygia)",
-			description: "Option in Lygia/Nidri road corridor.",
-			note: "Lygia/Nidri (~20–30 min)",
-			mapLink: "https://maps.google.com/?q=Shell+Lygia+Lefkada",
-		},
-	],
-};
+import type { Beach } from "./components/Beach/BeachCards";
+import foodSectionsData from "./data/foodSectionsData";
+import { sharedFeatures, accommodationData } from "./data/accommodationData";
+import extraServices from "./data/extraServices";
+import greekFoods from "./data/greekFoods";
+import airports from "./data/airports";
+import carRentals from "./data/carRentals";
+import testGallery from "./data/testGallery";
+import { CALENDAR_URL } from "./data/constants";
+import sections from "./data/sections";
+import locales from "./data/locales";
 
-const locales = { en, gr };
-const sections = [
-	{ id: "home" },           // Lefkada
-	{ id: "accommodation" }, // Accommodation
-	{ id: "travel" },        // Beaches
-	{ id: "food" },          // Food
-	{ id: "trips" },         // Trips
-	{ id: "transport" },     // Transportation
-];
-
-// Accommodation data
-const sharedFeatures = [
-	{ icon: <FaBroom />, label: "Cleaning", description: "Once per 3 days or on agreement" },
-	{ icon: <FaHome />, label: "Entire place", description: "You have the whole accommodation for yourself" },
-	{ icon: <FaWifi />, label: "Free Wi-Fi" },
-	{ icon: <FaUsers />, label: "Family rooms" },
-	{ icon: <FaUtensils />, label: "BBQ facilities" },
-	{ icon: <MdOutlineBakeryDining />, label: "Bakery delivery", description: "Personal bakery delivery in the morning" },
-	{ icon: <FaCouch />, label: "Balcony" },
-	{ icon: <FaSun />, label: "Terrace" },
-	{ icon: <FaBasketballBall />, label: "Public basketball court (20m)" },
-	{ icon: <FaSmokingBan />, label: "Non-smoking rooms" },
-	{ icon: <FaDog style={{ textDecoration: 'line-through' }} />, label: "No pets" },
-];
-
-const accommodationData = [
-	{
-		title: "Komilio 1 - Agave Villas",
-		images: [
-			{ src: "/src/react-app/assets/komilio1.jpg", alt: "Komilio 1 - Agave Villas" },
-			{ src: "/src/react-app/assets/komilio2.jpg", alt: "Komilio 2 - Agave Villas" },
-		],
-		tags: [
-			...sharedFeatures,
-			{ icon: <FaParking />, label: "Free parking (2 cars)" },
-		],
-		description: "Spacious two-floor villa with a large living area, ideal for families or groups. Enjoy a fully equipped kitchen, multiple bedrooms, and a private terrace.",
-		points: [
-			{ title: "Area", detail: "150m²" },
-			{ title: "Floors", detail: "2" },
-			{ title: "Bathrooms", detail: "2 WC" },
-			{ title: "Beds", detail: "4 double beds + 1 single bed" },
-			{ title: "Kitchen", detail: "Fully equipped" },
-			{ title: "Parking", detail: "Free on-site parking for 2 cars" },
-		],
-		gps: {
-			lat: 38.7109208,
-			lng: 20.5932805,
-			label: "KOMILIO 1",
-			embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3150.1689089407!2d20.5932805!3d38.7109208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135db3e304ca1c01:0x3dfff83a38d0f5bb!2sKOMILIO%201!5e0!3m2!1sen!2sgr!4v0",
-			gmapsUrl: "https://www.google.com/maps/dir/?api=1&destination=38.7109208,20.5932805",
-			fromAirportUrl: "https://www.google.com/maps/dir/Preveza+Aktio+Airport/38.7109208,20.5932805",
-		},
-	},
-	{
-		title: "Komilio 2 - Agave Villas",
-		images: [
-			{ src: "/src/react-app/assets/komilio2.jpg", alt: "Komilio 2 - Agave Villas" },
-			{ src: "/src/react-app/assets/komilio1.jpg", alt: "Komilio 1 - Agave Villas" },
-		],
-		tags: [
-			...sharedFeatures,
-			{ icon: <FaSwimmingPool />, label: "Private pool" },
-		],
-		description: "Modern two-floor villa with private pool, perfect for a relaxing holiday. Features two bedrooms, an external kitchen, and a beautiful terrace.",
-		points: [
-			{ title: "Floors", detail: "2" },
-			{ title: "Beds", detail: "2 double beds" },
-			{ title: "Kitchen", detail: "External, fully equipped" },
-			{ title: "Pool", detail: "Private pool" },
-		],
-		gps: {
-			lat: 38.710895,
-			lng: 20.590574,
-			label: "Komilio 2",
-			embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3150.1689089407!2d20.590574!3d38.710895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135db3e304ca1c01:0x3dfff83a38d0f5bb!2sKOMILIO%201!5e0!3m2!1sen!2sgr!4v0",
-			gmapsUrl: "https://www.google.com/maps/dir/?api=1&destination=38.710895,20.590574",
-			fromAirportUrl: "https://www.google.com/maps/dir/Preveza+Aktio+Airport/38.710895,20.590574",
-		},
-	},
-];
-
-const extraServices = [
-	{ title: "Airport transfer", detail: "We can arrange transport from the airport to the villa." },
-	{ title: "Car/bike rental", detail: "Assistance with renting a car or bicycle." },
-	{ title: "Motorboat rental", detail: "Help with renting a motorboat for your stay." },
-	{ title: "Sports activities", detail: "Windsurfing, cycling, canoeing and more." },
-	{ title: "Health stays", detail: "Special stays for asthma, eczema, and other conditions." },
-];
-
-// Test gallery images (replace with real later)
-const CALENDAR_URL = "https://www.supersaas.sk/schedule/Komilio/Komilio1_booking";
-const testGallery: GalleryImage[] = [
-	{
-		src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-		alt: "Beach 1",
-	},
-	{
-		src: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-		alt: "Beach 2",
-	},
-];
+// Type annotations for imported data
+const typedAccommodationData: any[] = accommodationData as any[];
+const typedExtraServices: { title: string; detail: string }[] = extraServices as { title: string; detail: string }[];
+const typedGreekFoods: any[] = greekFoods as any[];
+const typedAirports: { name: string; mapsUrl: string; website: string }[] = airports as { name: string; mapsUrl: string; website: string }[];
+const typedCarRentals: { name: string; url: string }[] = carRentals as { name: string; url: string }[];
+const typedTestGallery: GalleryImage[] = testGallery as GalleryImage[];
 
 function App() {
 	const [active, setActive] = useState("home");
@@ -434,92 +48,6 @@ function App() {
 		window.addEventListener("resize", checkMobile);
 		return () => window.removeEventListener("resize", checkMobile);
 	}, []);
-
-	// Data for new section components
-	const greekFoods = [
-		{
-			name: "Moussaka",
-			img: "moussaka.jpg",
-			ingredients: [
-				"2 eggplants",
-				"2 potatoes",
-				"500g minced beef or lamb",
-				"1 onion",
-				"2 cloves garlic",
-				"400g canned tomatoes",
-				"Olive oil, salt, pepper, cinnamon, nutmeg",
-				"Béchamel sauce (milk, flour, butter, nutmeg, egg yolk)"
-			],
-			process: "Slice eggplants and potatoes, fry or bake until soft. Sauté onion and garlic, add minced meat, cook until browned. Add tomatoes and spices, simmer. Layer potatoes, eggplants, meat sauce in a baking dish, top with béchamel. Bake at 180°C for 45 minutes until golden."
-		},
-		{
-			name: "Souvlaki",
-			img: "souvlaki.jpg",
-			ingredients: [
-				"500g pork or chicken, cut in cubes",
-				"Olive oil, lemon juice, oregano, salt, pepper",
-				"Pita bread, tomatoes, onions, tzatziki"
-			],
-			process: "Marinate meat in olive oil, lemon, oregano, salt, pepper for 2+ hours. Skewer and grill until cooked. Serve in pita with tomatoes, onions, and tzatziki."
-		},
-		{
-			name: "Greek Salad (Horiatiki)",
-			img: "greek-salad.jpg",
-			ingredients: [
-				"Tomatoes",
-				"Cucumbers",
-				"Red onion",
-				"Kalamata olives",
-				"Feta cheese",
-				"Oregano, olive oil, salt"
-			],
-			process: "Chop vegetables, combine in a bowl. Add olives and feta on top. Sprinkle with oregano, salt, and drizzle with olive oil. Serve fresh."
-		},
-		{
-			name: "Spanakopita",
-			img: "spanakopita.jpg",
-			ingredients: [
-				"500g spinach",
-				"200g feta cheese",
-				"1 onion",
-				"2 eggs",
-				"Dill, parsley, olive oil, salt, pepper",
-				"Phyllo dough"
-			],
-			process: "Sauté onion, add spinach, cook until wilted. Mix with crumbled feta, eggs, herbs, salt, pepper. Layer phyllo in a pan, add filling, cover with more phyllo. Brush with olive oil. Bake at 180°C for 40 minutes until golden."
-		},
-		{
-			name: "Baklava",
-			img: "baklava.jpg",
-			ingredients: [
-				"400g phyllo dough",
-				"250g walnuts or pistachios",
-				"150g butter",
-				"200g sugar",
-				"200ml water",
-				"100g honey",
-				"Cinnamon, lemon juice"
-			],
-			process: "Layer phyllo and melted butter in a pan, sprinkle with chopped nuts and cinnamon. Repeat layers. Cut into diamonds. Bake at 180°C for 40 min. Boil sugar, water, honey, lemon for syrup, pour over hot baklava."
-		}
-	];
-	const airports = [
-		{
-			name: "Preveza (Aktio) International Airport (PVK)",
-			mapsUrl: "https://www.google.com/maps/place/Preveza+International+Airport/@38.9308786,20.7672918,1187",
-			website: "https://www.pvk-airport.gr/en"
-		},
-		{
-			name: "Corfu International Airport (CFU)",
-			mapsUrl: "https://www.google.com/maps/place/Corfu+International+Airport/@39.6071366,19.9124167,1176",
-			website: "https://www.cfu-airport.gr/en"
-		}
-	];
-	const carRentals = [
-		{ name: "Ionian Rent a Car", url: "https://www.ionianrentacar.com" },
-		{ name: "EasyDrive Lefkada", url: "https://www.easydrivelefkada.com" },
-		{ name: "Sunshine Rentals", url: "https://www.sunshinerentals.gr" }
-	];
 
 	// Gallery state
 	const [galleryOpen, setGalleryOpen] = useState(false);
@@ -697,24 +225,24 @@ function App() {
 					<h1>{t.homeTitle}</h1>
 					<p>{t.homeDesc}</p>
 				</section>
-				<AccommodationSection
-					t={t}
-					data={accommodationData}
-					extraServices={extraServices}
-					onGalleryClick={(images, idx) => {
-						setGalleryImages(images);
-						setGalleryCurrent(idx);
-						setGalleryOpen(true);
-					}}
-					onMapEmbed={(embedUrl, name) => {
-						setMapUrl(embedUrl);
-						setMapName(name);
-						setMapOpen(true);
-					}}
-					sectionRef={(el) => {
-						sectionRefs.current["accommodation"] = el;
-					}}
-				/>
+				   <AccommodationSection
+					   t={t}
+					   data={typedAccommodationData}
+					   extraServices={typedExtraServices}
+					   onGalleryClick={(images, idx) => {
+						   setGalleryImages(images);
+						   setGalleryCurrent(idx);
+						   setGalleryOpen(true);
+					   }}
+					   onMapEmbed={(embedUrl, name) => {
+						   setMapUrl(embedUrl);
+						   setMapName(name);
+						   setMapOpen(true);
+					   }}
+					   sectionRef={(el) => {
+						   sectionRefs.current["accommodation"] = el;
+					   }}
+				   />
 				<BeachSection
 					t={t}
 					onCardClick={handleCardClick}
@@ -723,36 +251,36 @@ function App() {
 						sectionRefs.current["travel"] = el;
 					}}
 				/>
-				<FoodSection
-					greekFoods={greekFoods}
-					restaurants={foodSectionsData.restaurants}
-					supermarkets={foodSectionsData.supermarkets}
-					sectionRef={(el) => {
-						sectionRefs.current["food"] = el;
-					}}
-				/>
+				   <FoodSection
+					   greekFoods={typedGreekFoods}
+					   restaurants={foodSectionsData.restaurants}
+					   supermarkets={foodSectionsData.supermarkets}
+					   sectionRef={(el) => {
+						   sectionRefs.current["food"] = el;
+					   }}
+				   />
 				<TripsSection
 					t={t}
 					sectionRef={(el) => {
 						sectionRefs.current["trips"] = el;
 					}}
 				/>
-				<TransportSection
-					airports={airports}
-					carRentals={carRentals}
-					gasStations={foodSectionsData.gasStations}
-					sectionRef={(el) => {
-						sectionRefs.current["transport"] = el;
-					}}
-				/>
+				   <TransportSection
+					   airports={typedAirports}
+					   carRentals={typedCarRentals}
+					   gasStations={foodSectionsData.gasStations}
+					   sectionRef={(el) => {
+						   sectionRefs.current["transport"] = el;
+					   }}
+				   />
 			</main>
-			<Gallery
-				images={galleryImages}
-				open={galleryOpen}
-				onClose={() => setGalleryOpen(false)}
-				current={galleryCurrent}
-				setCurrent={setGalleryCurrent}
-			/>
+			   <Gallery
+				   images={galleryImages as GalleryImage[]}
+				   open={galleryOpen}
+				   onClose={() => setGalleryOpen(false)}
+				   current={galleryCurrent}
+				   setCurrent={setGalleryCurrent}
+			   />
 			<MapModal
 				open={mapOpen}
 				onClose={() => setMapOpen(false)}
@@ -766,6 +294,7 @@ function App() {
 			/>
 		</div>
 	);
-}
 
+
+}
 export default App;

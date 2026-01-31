@@ -1,8 +1,10 @@
 import React from "react";
+import * as FaIcons from 'react-icons/fa';
+import * as MdIcons from 'react-icons/md';
 import type { GalleryImage } from "../Extra/Gallery";
 
 export interface AccommodationFeature {
-  icon: React.ReactNode;
+  icon: string;
   label: string;
   description?: string;
 }
@@ -35,11 +37,19 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
     <div className="accommodation-info">
       <h3>{title}</h3>
       <div className="accommodation-tags">
-        {tags.map((tag, i) => (
-          <span className="accommodation-tag" key={i} title={tag.description}>
-            {tag.icon} {tag.label}
-          </span>
-        ))}
+        {tags.map((tag, i) => {
+          let IconComponent = null;
+          if (tag.icon && FaIcons[tag.icon as keyof typeof FaIcons]) {
+            IconComponent = FaIcons[tag.icon as keyof typeof FaIcons];
+          } else if (tag.icon && MdIcons[tag.icon as keyof typeof MdIcons]) {
+            IconComponent = MdIcons[tag.icon as keyof typeof MdIcons];
+          }
+          return (
+            <span className="accommodation-tag" key={i} title={tag.description}>
+              {IconComponent && <IconComponent style={{ marginRight: 4 }} />} {tag.label}
+            </span>
+          );
+        })}
       </div>
       <div className="accommodation-description">{description}</div>
       <ul className="accommodation-points">
