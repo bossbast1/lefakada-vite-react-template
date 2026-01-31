@@ -17,6 +17,7 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ t, data, ex
     id="accommodation"
     ref={sectionRef}
     className="lefka-section"
+    style={{ background: "#ffffff66" }}
   >
     <h2>{t.accomTitle}</h2>
     <AccommodationCards
