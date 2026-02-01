@@ -17,7 +17,7 @@ const GasStationsList: React.FC<GasStationsListProps> = ({ stations }) => (
     <ul>
       {stations.map((station, i) => (
         <li key={i}>
-          <strong>{station.name}</strong> – {station.description} <span style={{ color: '#888' }}>{station.note}</span>
+          <strong>{station.name}</strong> – {station.description} <span style={{ color: "black" /* '#888' */ }}>{station.note}</span>
           {station.mapLink && (
             <a href={station.mapLink} target="_blank" rel="noopener noreferrer" style={{ marginLeft: 8 }}>Map</a>
           )}

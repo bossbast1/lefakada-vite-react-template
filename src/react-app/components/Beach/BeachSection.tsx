@@ -13,6 +13,7 @@ const BeachSection: React.FC<BeachSectionProps> = ({ t, onCardClick, onMapClick,
     id="travel"
     ref={sectionRef}
     className="lefka-section"
+    style={{ background: "#ffffff00", paddingLeft: 0, paddingRight: 0 }}
   >
     <h2>{t.travelTitle}</h2>
     <BeachCards
@@ -23,7 +24,7 @@ const BeachSection: React.FC<BeachSectionProps> = ({ t, onCardClick, onMapClick,
       onDirectionsFromMyLocation={(beach: Beach) => window.open(beach.directionsFromMyLocation, "_blank")}
     />
     <div className="beach-table-wrap">
-      <h4>{t.travelTableTitle}</h4>
+      <h4 style={{color: "#f8f9e4"}}>{t.travelTableTitle}</h4>
       <table className="beach-table">
         <thead>
           <tr>

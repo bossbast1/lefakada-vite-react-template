@@ -5,7 +5,7 @@ interface ExtraServicesProps {
 }
 
 const ExtraServices: React.FC<ExtraServicesProps> = ({ services }) => (
-  <div className="accommodation-extra-services" style={{ color: "white" }}>
+  <div className="accommodation-extra-services" style={{ color: "#f8f9e4" }}>
     <h3>What else we can provide</h3>
     <ul>
       {services.map((s, i) => (

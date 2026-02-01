@@ -193,7 +193,7 @@ html, body, #root {
 }
 .gray-action-btn:hover {
 	background: #e0e0e0;
-	border-color: #888;
+	border-color: black; /* #888; */
 }
 /* Accommodation cards layout */
 .accommodation-cards {
@@ -266,7 +266,7 @@ html, body, #root {
 .accommodation-info h3 {
 	margin: 0 0 0.7rem 0;
 	color: #0077b6;
-	/*font-size: 2rem;*/
+	font-size: 1.4rem;
 }
 .accommodation-tags {
 	display: flex;
@@ -284,6 +284,9 @@ html, body, #root {
 	align-items: center;
 	gap: 0.4rem;
 	font-weight: 500;
+	svg {
+		font-size: 1.0rem;
+	}
 }
 .accommodation-description {
 	color: #444;
@@ -666,7 +669,7 @@ html, body, #root {
 	}
 
 body {
-	color: #888;
+	color: black; /* #888; */
 }
 
 	.lefka-main {
@@ -848,4 +851,8 @@ body {
 	height: 80vh !important;
 	min-height: 400px;
 	max-width: 1200px;
+}
+
+.greek-foods-list {
+	color: #f8f9e4;
 }

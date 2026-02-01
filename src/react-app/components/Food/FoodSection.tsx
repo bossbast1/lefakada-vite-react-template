@@ -14,13 +14,14 @@ const FoodSection: React.FC<FoodSectionProps> = ({ greekFoods, restaurants, supe
     id="food"
     ref={sectionRef}
     className="lefka-section"
+    style={{ background: "#ffffff00", paddingLeft: 0, paddingRight: 0 }}
   >
     <h2 style={{ color: '#0077b6' }}>Food</h2>
-    <h3>Top 5 Traditional Greek Foods</h3>
+    <h3 style={{color: "#f8f9e4"}}>Top 5 Traditional Greek Foods</h3>
     <GreekFoodsList foods={greekFoods} />
-    <h3>Restaurants & Taverns</h3>
+    <h3 style={{color: "#f8f9e4"}}>Restaurants & Taverns</h3>
     <FoodSections items={restaurants} />
-    <h3>Supermarkets & Grocery Stores</h3>
+    <h3 style={{color: "#f8f9e4"}}>Supermarkets & Grocery Stores</h3>
     <FoodSections items={supermarkets} />
   </section>
 );
