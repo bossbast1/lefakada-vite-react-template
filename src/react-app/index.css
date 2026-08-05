@@ -52,9 +52,12 @@ button {
 button:hover {
 	border-color: #646cff;
 }
-button:focus,
+button:focus {
+	outline: none;
+}
 button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
+	outline: 2px solid #0077b6;
+	outline-offset: 2px;
 }
 
 /* Responsive fix for gallery close button on small landscape devices */

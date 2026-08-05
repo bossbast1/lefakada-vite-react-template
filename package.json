@@ -37,6 +37,8 @@
 	"scripts": {
 		"build": "tsc -b && vite build",
 		"cf-typegen": "wrangler types",
+		"db:migrate:local": "wrangler d1 migrations apply lefkada-bookings --local",
+		"db:migrate:remote": "wrangler d1 migrations apply lefkada-bookings --remote",
 		"check": "tsc && vite build && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
 		"dev": "vite",

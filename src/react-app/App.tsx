@@ -8,8 +8,10 @@ import BeachSection from "./components/Beach/BeachSection";
 import FoodSection from "./components/Food/FoodSection";
 import TripsSection from "./components/Trips/TripsSection";
 import TransportSection from "./components/Transport/TransportSection";
-import CalendarModal from "./components/Extra/CalendarModal";
-import HamburgerMenu from "./components/Extra/HamburgerMenu";
+import ReservationModal from "./components/Reservation/ReservationModal";
+import Header from "./components/Header/Header";
+import heroImage from "./assets/Komilio1.jpg";
+import heroVideo from "./assets/hero-video.mp4";
 import Gallery, { GalleryImage } from "./components/Extra/Gallery";
 import MapModal from "./components/Extra/MapModal";
 import type { Beach } from "./components/Beach/BeachCards";
@@ -20,7 +22,6 @@ import greekFoods from "./data/greekFoods";
 import airports from "./data/airports";
 import carRentals from "./data/carRentals";
 import testGallery from "./data/testGallery";
-import { CALENDAR_URL } from "./data/constants";
 import sections from "./data/sections";
 import locales from "./data/locales";
 
@@ -40,13 +41,27 @@ function App() {
 	const lastVisibleIdsRef = useRef<string[]>([]);
 
 	// Responsive nav state
-	const [menuOpen, setMenuOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	useEffect(() => {
 		const checkMobile = () => setIsMobile(window.innerWidth <= 830);
 		checkMobile();
 		window.addEventListener("resize", checkMobile);
 		return () => window.removeEventListener("resize", checkMobile);
+	}, []);
+
+	// Keep the document language in sync for screen readers and SEO
+	useEffect(() => {
+		document.documentElement.lang = lang === "gr" ? "el" : "en";
+	}, [lang]);
+
+	// Skip the hero video for users who prefer reduced motion (photo fallback stays)
+	const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+	useEffect(() => {
+		const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+		setPrefersReducedMotion(mq.matches);
+		const onChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+		mq.addEventListener("change", onChange);
+		return () => mq.removeEventListener("change", onChange);
 	}, []);
 
 	// Gallery state
@@ -64,13 +79,13 @@ function App() {
 	const [directionsUrl, setDirectionsUrl] = useState("");
 	const [directionsName, setDirectionsName] = useState("");
 
-	// Calendar modal state
-	const [calendarOpen, setCalendarOpen] = useState(false);
-	const [calendarUrl, setCalendarUrl] = useState<string>("");
+	// Reservation modal state
+	const [reservationOpen, setReservationOpen] = useState(false);
+	const [reservationProperty, setReservationProperty] = useState<{ id: string; title: string } | null>(null);
 
 	// Prevent background scroll when modal is open
 	useEffect(() => {
-		if (mapOpen || galleryOpen || directionsOpen || calendarOpen) {
+		if (mapOpen || galleryOpen || directionsOpen || reservationOpen) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "";
@@ -78,48 +93,51 @@ function App() {
 		return () => {
 			document.body.style.overflow = "";
 		};
-	}, [mapOpen, galleryOpen, directionsOpen, calendarOpen]);
+	}, [mapOpen, galleryOpen, directionsOpen, reservationOpen]);
 
 	useEffect(() => {
-  const visibleSections = new Set<string>();
+		// Highlight the section with the highest visible share: the fraction of
+		// the section's own height currently inside the viewport. Computed on
+		// scroll because IntersectionObserver only fires when the visible set
+		// changes, which misses scrolls inside a long section.
+		let ticking = false;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const id = entry.target.id;
-        if (entry.isIntersecting) visibleSections.add(id);
-        else visibleSections.delete(id);
-      });
+		const compute = () => {
+			ticking = false;
+			const atBottom =
+				window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8;
+			if (atBottom) {
+				setActive(sections[sections.length - 1].id);
+				return;
+			}
+			const vh = window.innerHeight;
+			let bestId = sections[0].id;
+			let bestRatio = -1;
+			sections.forEach(({ id }) => {
+				const el = sectionRefs.current[id];
+				if (!el) return;
+				const rect = el.getBoundingClientRect();
+				const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
+				const ratio = rect.height > 0 ? visible / rect.height : 0;
+				if (ratio > bestRatio) {
+					bestId = id;
+					bestRatio = ratio;
+				}
+			});
+			setActive(bestId);
+		};
 
-      if (visibleSections.size === 0) return;
+		const onScroll = () => {
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(compute);
+			}
+		};
 
-      // Pick the section whose top is closest to viewport top
-      let bestId: string | null = null;
-      let bestTop = Infinity;
-
-      visibleSections.forEach((id) => {
-        const el = sectionRefs.current[id];
-        if (!el) return;
-
-        const top = Math.abs(el.getBoundingClientRect().top);
-        if (top < bestTop) {
-          bestTop = top;
-          bestId = id;
-        }
-      });
-
-      if (bestId && bestId !== active) setActive(bestId);
-    },
-    { threshold: 0 } // fire as soon as any part enters
-  );
-
-  sections.forEach((sec) => {
-    const el = sectionRefs.current[sec.id];
-    if (el) observer.observe(el);
-  });
-
-  return () => observer.disconnect();
-}, [sections, active]);
+		compute();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		return () => window.removeEventListener("scroll", onScroll);
+	}, []);
 
 	const scrollToSection = (id: string) => {
 		const ref = sectionRefs.current[id];
@@ -142,69 +160,23 @@ function App() {
 		setMapOpen(true);
 	};
 
-	// Expose handler for Reserve button (AccommodationCard)
-	useEffect(() => {
-		(window as any).onReserveClick = () => {
-			setCalendarUrl(CALENDAR_URL);
-			setCalendarOpen(true);
-		};
-		return () => {
-			(window as any).onReserveClick = undefined;
-		};
-	}, []);
+	const handleReserveClick = (id: string, title: string) => {
+		setReservationProperty({ id, title });
+		setReservationOpen(true);
+	};
 
 	return (
 		<div className="lefka-app">
-			<div className="lefka-lang-select">
-				<label htmlFor="lang-select">{t.lang}: </label>
-				<select
-					id="lang-select"
-					value={lang}
-					onChange={(e) => setLang(e.target.value as "en" | "gr")}
-				>
-					<option value="en">{t.en}</option>
-					<option value="gr">{t.gr}</option>
-				</select>
-			</div>
-			{/* Responsive nav: hamburger for mobile, full nav for desktop */}
-			{isMobile ? (
-				   <nav className="lefka-nav mobile-nav">
-					   <button
-						   className="hamburger-btn"
-						   aria-label="Open menu"
-						   onClick={() => setMenuOpen(true)}
-					   >
-						   <span className="hamburger-icon">
-							   <span></span><span></span><span></span>
-						   </span>
-					   </button>
-					   <span className="mobile-nav-current">
-						   {t.nav[sections.findIndex(s => s.id === active)]}
-					   </span>
-					   <HamburgerMenu
-						   open={menuOpen}
-						   sections={sections.map((s, i) => ({ id: s.id, label: t.nav[i] }))}
-						   current={active}
-						   onSelect={id => {
-							   scrollToSection(id);
-							   setMenuOpen(false);
-						   }}
-						   onClose={() => setMenuOpen(false)}
-					   />
-				   </nav>
-			   ) : (
-				   <nav className="lefka-nav">
-					   {sections.map((sec, i) => (
-						   <button
-							   key={sec.id}
-							   className={active === sec.id ? "active" : ""}
-							   onClick={() => scrollToSection(sec.id)}
-						   >
-							   {t.nav[i]}
-						   </button>
-					   ))}
-				   </nav>
-			   )}
+			<Header
+				lang={lang}
+				onLangChange={setLang}
+				sections={sections.map((s, i) => ({ id: s.id, label: t.nav[i] }))}
+				active={active}
+				onNavigate={scrollToSection}
+				onReserve={() => scrollToSection("accommodation")}
+				reserveLabel={t.reservation.title}
+				isMobile={isMobile}
+			/>
 			   <main className="lefka-main">
 				   {galleryOpen && (
 					   <Gallery
@@ -220,10 +192,28 @@ function App() {
 					ref={(el) => {
 						sectionRefs.current["home"] = el;
 					}}
-					className="lefka-section"
+					className="lefka-hero"
+					style={{ backgroundImage: `url(${heroImage})` }}
 				>
-					<h1>{t.homeTitle}</h1>
-					<p>{t.homeDesc}</p>
+					{!prefersReducedMotion && (
+						<video
+							className="lefka-hero-video"
+							autoPlay
+							muted
+							loop
+							playsInline
+							preload="metadata"
+							poster={heroImage}
+							aria-hidden="true"
+						>
+							<source src={heroVideo} type="video/mp4" />
+						</video>
+					)}
+					<div className="lefka-hero-overlay" />
+					<div className="lefka-hero-content">
+						<h1>{t.homeTitle}</h1>
+						<p>{t.homeDesc}</p>
+					</div>
 				</section>
 				   <AccommodationSection
 					   t={t}
@@ -239,6 +229,7 @@ function App() {
 						   setMapName(name);
 						   setMapOpen(true);
 					   }}
+					   onReserve={handleReserveClick}
 					   sectionRef={(el) => {
 						   sectionRefs.current["accommodation"] = el;
 					   }}
@@ -287,11 +278,15 @@ function App() {
 				mapUrl={mapUrl}
 				name={mapName}
 			/>
-			<CalendarModal
-				open={calendarOpen}
-				onClose={() => setCalendarOpen(false)}
-				calendarUrl={calendarUrl}
-			/>
+			{reservationProperty && (
+				<ReservationModal
+					open={reservationOpen}
+					onClose={() => setReservationOpen(false)}
+					propertyId={reservationProperty.id}
+					propertyTitle={reservationProperty.title}
+					t={t.reservation}
+				/>
+			)}
 		</div>
 	);
 

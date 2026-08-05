@@ -10,6 +10,7 @@ export interface AccommodationFeature {
 }
 
 export interface AccommodationCardProps {
+  id: string;
   title: string;
   images: GalleryImage[];
   tags: AccommodationFeature[];
@@ -18,9 +19,11 @@ export interface AccommodationCardProps {
   gps: { lat: number; lng: number; label: string; embedUrl: string; gmapsUrl: string; fromAirportUrl: string };
   onGalleryClick: (images: GalleryImage[], startIdx: number) => void;
   onMapEmbed: (embedUrl: string, name: string) => void;
+  onReserve: (id: string, title: string) => void;
 }
 
 const AccommodationCard: React.FC<AccommodationCardProps> = ({
+  id,
   title,
   images,
   tags,
@@ -29,6 +32,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
   gps,
   onGalleryClick,
   onMapEmbed,
+  onReserve,
 }) => (
   <div className="accommodation-card">
     <div className="accommodation-img-wrap" style={{ cursor: 'pointer' }} onClick={() => onGalleryClick(images, 0)}>
@@ -79,7 +83,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
             <button
               className="reserve-btn"
               style={{ background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)', color: '#fff', border: 'none', borderRadius: 6, padding: '0.7rem 2.2rem', fontWeight: 600, fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(67,233,123,0.15)' }}
-              onClick={() => typeof (window as any).onReserveClick === 'function' && (window as any).onReserveClick()}
+              onClick={() => onReserve(id, title)}
             >
               Reserve
             </button>

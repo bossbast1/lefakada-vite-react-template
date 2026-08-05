@@ -19,6 +19,7 @@ const sharedFeatures = [
 
 const accommodationData = [
 	{
+		id: "komilio1",
 		title: "Komilio 1 - Agave Villas",
 		images: [
 			{ src: "/src/react-app/assets/komilio1.jpg", alt: "Komilio 1 - Agave Villas" },
@@ -47,6 +48,7 @@ const accommodationData = [
 		},
 	},
 	{
+		id: "komilio2",
 		title: "Komilio 2 - Agave Villas",
 		images: [
 			{ src: "/src/react-app/assets/komilio2.jpg", alt: "Komilio 2 - Agave Villas" },

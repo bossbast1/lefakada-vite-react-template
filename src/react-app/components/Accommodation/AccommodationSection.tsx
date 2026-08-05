@@ -9,10 +9,11 @@ interface AccommodationSectionProps {
   extraServices: { title: string; detail: string }[];
   onGalleryClick: (images: any[], idx: number) => void;
   onMapEmbed: (embedUrl: string, name: string) => void;
+  onReserve: (id: string, title: string) => void;
   sectionRef?: (el: HTMLElement | null) => void;
 }
 
-const AccommodationSection: React.FC<AccommodationSectionProps> = ({ t, data, extraServices, onGalleryClick, onMapEmbed, sectionRef }) => (
+const AccommodationSection: React.FC<AccommodationSectionProps> = ({ t, data, extraServices, onGalleryClick, onMapEmbed, onReserve, sectionRef }) => (
   <section
     id="accommodation"
     ref={sectionRef}
@@ -24,6 +25,7 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ t, data, ex
       data={data}
       onGalleryClick={onGalleryClick}
       onMapEmbed={onMapEmbed}
+      onReserve={onReserve}
     />
     <ExtraServices services={extraServices} />
     <KomilioCard title="About Komilio (Komílion)">

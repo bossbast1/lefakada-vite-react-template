@@ -115,6 +115,35 @@ const en = {
   lang: "Language",
   en: "English",
   gr: "Greek",
-  komilionAddress: "KOMILIO 1, ΚΟΜΗΛΙΟ , 31082, ΚΟΜΗΛΙΟΝ, Komilio 310 82, Grécko"
+  komilionAddress: "KOMILIO 1, ΚΟΜΗΛΙΟ , 31082, ΚΟΜΗΛΙΟΝ, Komilio 310 82, Grécko",
+  reservation: {
+    title: "Reserve",
+    selectDates: "Select your dates",
+    loadingAvailability: "Loading availability...",
+    loadError: "Could not load availability. Please try again later.",
+    arrival: "Arrival",
+    departure: "Departure",
+    nights: "nights",
+    continue: "Continue",
+    back: "Back",
+    guestDetails: "Your details",
+    name: "Full name",
+    email: "Email",
+    phone: "Phone (optional)",
+    guests: "Number of guests",
+    submit: "Send reservation request",
+    submitting: "Sending...",
+    successTitle: "Request sent!",
+    successBody:
+      "Thank you! We received your reservation request and will confirm availability with you shortly by email or phone.",
+    errorGeneric: "Something went wrong. Please try again or contact us directly.",
+    errorConflict: "Sorry, these dates were just booked by someone else. Please pick different dates.",
+    close: "Close",
+    weekdays: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+    months: [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December",
+    ],
+  },
 };
 export default en;
