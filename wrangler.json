@@ -16,7 +16,7 @@
 		{
 			"binding": "DB",
 			"database_name": "lefkada-bookings",
-			"database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
+			"database_id": "302efb7a-cec0-4d99-8391-cb03646ec5d2",
 			"migrations_dir": "./migrations"
 		}
 	],
